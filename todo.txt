@@ -1,4 +1,6 @@
-TODO: pripravit projekt do odezvdavaci podoby
+TODO:
+	- testovací data a skript, který ukáže celkovou funkcionalitu DB
+	- Popis a komentáře
 
 co neni pokryto stats
 	datum narozeni u hrace

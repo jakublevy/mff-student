@@ -1,3 +1,6 @@
+USE [Levý_Fotbal] 
+GO
+
 drop statistics Adresa.STAT_Adresa_Ulice
 drop statistics Adresa.STAT_Adresa_Č_p 
 drop statistics Adresa.STAT_Adresa_Město
