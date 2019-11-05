@@ -3,5 +3,7 @@ i=0
 
 j=read()
 while i<j:
-   test(i)
-   i=i+1
+   if a < b:
+      test(i)
+      i=i+1
+a

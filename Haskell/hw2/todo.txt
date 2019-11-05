@@ -1,2 +1,7 @@
-upravit lexer aby parsoval (Token, Int) misto Token
-kde Int je cislo radky, kde se token vyskytuje
+odstranit levou rekurzi
+naparsovat tokeny do stromu 
+    pouze u identifikatoru potrebujeme znat cislo radky (funkce nebo promenne)
+
+
+najebat TokenParser
+    nacist vysledek do nejakeho stromu, kde budou mit tokeny cislo radky

@@ -1,4 +1,4 @@
-module State(state, get, put) where
+module State(State, state, get, put) where
 
 newtype State s a = S { runState :: s -> (a, s) }
 

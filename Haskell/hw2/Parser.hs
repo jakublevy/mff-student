@@ -1,30 +1,30 @@
-module Parser(Parser(parse), makeParser, (<|>), empty, some, many, fail) where
+module Parser(Parser(parse), makeParser, (<|>), empty, some, many) where
 
 import Control.Applicative
 
-newtype Parser a = P { parse :: String -> [(a, String)] }
+newtype Parser s a = P { parse :: s -> [(a, s)] }
 
-makeParser :: (String -> [(a, String)]) -> Parser a
+makeParser :: (s -> [(a, s)]) -> Parser s a
 makeParser = P
 
-instance Functor Parser where
+instance Functor (Parser s) where
  -- fmap :: (a -> b) -> Parser a -> Parser b
     fmap f (P p) = P $ \inp -> p inp >>= \(x, out) -> return (f x, out)
 
-instance Applicative Parser where
+instance Applicative (Parser s) where
  -- pure :: a -> Parser a
     pure x = P $ \out -> [(x, out)]
 
  -- (<*>) :: Parser (a -> b) -> Parser a -> Parser b
     P pf <*> p = P $ \inp -> pf inp >>= \(f, inp2) -> parse (fmap f p) inp2
 
-instance Monad Parser where
+instance Monad (Parser s) where
  -- return = pure
  
  -- (>>=) :: Parser a -> (a -> Parser b) -> Parser b
     P p >>= f = P $ \inp -> p inp >>= \(x, inp2) -> parse (f x) inp2
 
-instance Alternative Parser where
+instance Alternative (Parser s) where
  -- empty :: Parser a
     empty = P $ \_ -> []
 
@@ -33,9 +33,8 @@ instance Alternative Parser where
                                     [(x, out)] -> [(x, out)]
                                     [] -> p2 inp
 
- -- many :: Parser a -> Parser [a]
+ -- many :: StringParser a -> Parser [a]
     many p = some p <|> pure []
 
  -- some :: Parser a -> Parser [a]
     some p = (:) <$> p <*> many p
-

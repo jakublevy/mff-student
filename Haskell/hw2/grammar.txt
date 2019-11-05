@@ -42,7 +42,6 @@ Expr: Int
     | Expr MULT Expr
     | Expr DIV Expr
     | LPAR Expr RPAR
-    | Assignment
     | Call
 
 Boolean_Expression: Expr EQ Expr
@@ -54,10 +53,11 @@ Boolean_Expression: Expr EQ Expr
 
 Method_Header: DEF Identifier LPAR Parameters RPAR COLON
 
-Parameter: Identifier
+Parameter: Expr
 
+//neni uplne dobre
 Parameters: %empty
-          | Identifier
+          | Parameter
             Parameters_Next
 
 Parameters_Next: %empty
@@ -70,18 +70,20 @@ Assignment: Identifier ASSIGN Expr
 Call: Identifier LPAR Parameters RPAR 
 
 Else_Opt: %empty
-        | ELSE Body
+        | ELSE COLON Body
 
 Statement: Expr
          | WHILE Boolean_Expression COLON Body
          | IF Boolean_Expression COLON Body Else_Opt
          | Method_Def
+         | Assignment
 
 Method_Def: Method_Header Body
 
-Body:        INDENT_IN
-             Indent_Statements
-             INDENT_OUT
+Body: Statement
+    | INDENT_IN
+      Indent_Statements
+      INDENT_OUT
             
 Statements_Opt: %empty
               | Statements

@@ -1,62 +1,71 @@
-module SlepysLexer(Token(..)
-                 , plus
-                 , minus
-                 , mult
-                 , division
-                 , assign
-                 , comma
-                 , colon
-                 , lPar
-                 , rPar
-                 , def
-                 , if_
-                 , else_
-                 , eq
-                 , lt 
-                 , le
-                 , gt
-                 , ge
-                 , semicolon
-                 , pass
-                 , identifier
-                 , integer
-                 , str
-                 , whitespace
-                 , newline
-                 , token
+module SlepysLexer(Lexem(..)
+                    , LineNum
+                    , Indent
+                    , Token
+                --  , plus
+                --  , minus
+                --  , mult
+                --  , division
+                --  , assign
+                --  , comma
+                --  , colon
+                --  , lPar
+                --  , rPar
+                --  , def
+                --  , if_
+                --  , else_
+                --  , eq
+                --  , lt 
+                --  , le
+                --  , gt
+                --  , ge
+                --  , semicolon
+                --  , pass
+                --  , identifier
+                --  , integer
+                --  , str
+                --  , whitespace
+                --  , newline
+                --  , token
                  , tokens
 ) where
 import Parser
-import ParsingPrimitives
+import StringParser
+import Data.List(elemIndex)
 
-data Token = Plus Int
-           | Minus Int
-           | Mult Int
-           | Div Int
-           | Assign Int
-           | Comma Int
-           | Colon Int
-           | LPar Int
-           | RPar Int
-           | Def Int
-           | If Int
-           | Else Int
-           | Eq Int
-           | Lt Int
-           | Le Int
-           | Gt Int
-           | Ge Int
-           | Semicolon Int
-           | Pass Int
-           | Identifier Int String
-           | Integer Int Int
-           | Str Int String
-           | Whitespace Int Int
-           | Newline Int Int
-           -- line num, value
+type LineNum = Int
+type Indent = Int
+type Token = (LineNum, Lexem)
+
+data Lexem = Plus
+           | Minus
+           | Mult
+           | Div
+           | Assign
+           | Comma
+           | Colon
+           | LPar
+           | RPar
+           | Def
+           | If
+           | Else
+           | Eq
+           | Lt
+           | Le
+           | Gt
+           | Ge
+           | Semicolon
+           | Pass
+           | IndentIn
+           | IndentOut
+           | Identifier String
+           | Integer Int
+           | Str String
+           | Whitespace Int
+           | Newline Int
     deriving Show
 
-insideString :: Parser Char
+insideString :: StringParser Char
 insideString = do
               c <- item
               if c == '"' then
@@ -67,20 +76,20 @@ insideString = do
                 return c
 
 
-quotedString :: Parser String
+quotedString :: StringParser String
 quotedString = do
                char '"'
                str <- many insideString
                char '"'
                return str
 
-ident :: Parser String
+ident :: StringParser String
 ident = (:) <$> identFirstLetter <*> many identNextLetter
 
-identFirstLetter :: Parser Char
+identFirstLetter :: StringParser Char
 identFirstLetter = lowerCase <|> char '_'
 
-identNextLetter :: Parser Char
+identNextLetter :: StringParser Char
 identNextLetter = letter <|> char '_' <|> digit 
 
 plus = char '+' >> return Plus
@@ -108,8 +117,8 @@ str = quotedString >>= \s -> return $ Str s
 whitespace = spaces >>= \n -> return $ Whitespace n
 newline = eols >>= \n -> return $ Newline n
 
-token :: Parser Token
-token = plus
+lexem :: StringParser Lexem
+lexem = plus
     <|> minus
     <|> mult
     <|> division
@@ -134,5 +143,32 @@ token = plus
     <|> whitespace
     <|> newline
 
-tokens :: Parser [Token]
-tokens = many token
+lexems :: StringParser [Lexem]
+lexems = many lexem
+
+tokens :: String -> Either String [Token]
+tokens inp = case lex of
+              [(tok, "")] -> addCtx tok [] 1 [0]
+              [] -> Left "Undefined error" 
+              [(_, xs)] -> Left $ "Undefined lexeme " ++ [head xs]
+  where lex = parse lexems inp
+
+addCtx :: [Lexem] -> [Token] -> LineNum -> [Indent] -> Either String [Token]
+addCtx [] acc l iS = Right $ reverse $ replicate (length iS - 1) (l,IndentOut) ++ acc
+
+addCtx [Whitespace _] acc l iS = addCtx [] acc l iS
+addCtx [Newline n] acc l iS = addCtx [] acc (l+n) iS
+addCtx [tok] acc l iS = addCtx [] ((l, tok) : acc) l iS
+
+addCtx (Newline n : Whitespace m : ts) acc l i | m == head i = addCtx ts acc (l+n) i
+                                                   | m > head i = addCtx ts ((l+n, IndentIn) : acc) (l+n) (m:i)
+                                                   | m < head i = case m `elemIndex` i of
+                                                                      Just k -> addCtx ts (replicate k (l+n, IndentOut) ++ acc) (l+n) (drop k i)
+                                                                      Nothing -> Left $ "Incorrect attempt to IndentOut on line " ++ show (l+n)
+
+addCtx (Whitespace m : ts) acc l i = addCtx ts acc l i
+addCtx (Newline n : ts) acc l i | i == [0]    = addCtx ts acc (l+n) [0]
+                                    | otherwise = addCtx ts (replicate (length i -1) (l+n, IndentOut) ++ acc) (l+n) [0]
+
+addCtx (t : ts) acc l i = addCtx ts ((l,t) : acc) l i 
+
