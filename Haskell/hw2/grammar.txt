@@ -3,7 +3,7 @@ MINUS '-'
 MULT '*'
 DIV '/'
 ASSIGN '='
-D_QUOTE '"'
+QUOTE '"'
 COMMA ','
 COLON ':'
 LPAR '('
@@ -29,8 +29,7 @@ Neg: MINUS
     
 Int: Neg | Nat
 
-String: D_QUOTE .* D_QUOTE
-      | S_QUOTE .* S_QUOTE
+String: QUOTE .* QUOTE
 
 Identifier: [a-zA-Z_][a-zA-Z0-9_]*
 
@@ -51,23 +50,26 @@ Boolean_Expression: Expr EQ Expr
                   | Expr GE Expr
                   | Expr
 
-Method_Header: DEF Identifier LPAR Parameters RPAR COLON
+Method_Header: DEF Identifier LPAR Formal_Parameters RPAR COLON
 
-Parameter: Expr
+Formal_Parameters: %empty
+                 | Identifier Formal_Parameters_Next
 
-//neni uplne dobre
-Parameters: %empty
-          | Parameter
-            Parameters_Next
+Formal_Parameters_Next: %empty
+                      | COMMA Identifier Formal_Parameters_Next
 
-Parameters_Next: %empty
-               | COMMA
-                 Parameter
-                 Parameters_Next
+Arguments: %empty
+         | Expr
+           Arguments_Next
+
+Arguments_Next: %empty
+              | COMMA
+                Expr
+                Arguments_Next
 
 Assignment: Identifier ASSIGN Expr
 
-Call: Identifier LPAR Parameters RPAR 
+Call: Identifier LPAR Arguments RPAR 
 
 Else_Opt: %empty
         | ELSE COLON Body

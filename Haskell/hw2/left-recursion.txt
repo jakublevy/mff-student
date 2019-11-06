@@ -1,0 +1,21 @@
+gramatika na parsovani vyrazu
+
+Expr = Term ExprLR
+ExprLR = BinOp3 Term ExprLR | ε
+
+Term = Functor TermLR
+TermLR = BinOp2 Functor TermLR | ε
+
+Functor = Factor FunctorLR
+FunctorLR = BinOp1 Factor FunctorLR | ε
+
+Factor = Int | String | Identifier | Call | ( Expr )
+
+Call = Identifier ( Arguments )
+Arguments = Expr Arguments_Next | ε
+Arguments_Next = , Expr Arguments_Next | ε
+
+BinOp1 = * | /
+BinOp2 = + | -
+BinOp3 = < | > | <= | >= | ==
+

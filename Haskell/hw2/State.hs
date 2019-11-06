@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module State(State, state, get, put) where
 
 newtype State s a = S { runState :: s -> (a, s) }
@@ -9,7 +11,7 @@ get :: State s s
 get = state $ \s -> (s, s)
 
 put :: s -> State s ()
-put newState = S $ \x -> ((), newState)
+put newState = S $ const ((), newState)
 
 instance Functor (State s) where
 -- fmap :: (a -> b) -> State s a -> State s b
@@ -17,13 +19,12 @@ instance Functor (State s) where
    
 instance Applicative (State s) where
 -- pure :: a -> ST a
-   pure x = S $ \s -> (x,s)
+   pure x = S (x,)
    
 -- (<*>) :: ST (a -> b) -> ST a -> ST b
    stf <*> stx = do
                  f <- stf
-                 x <- stx
-                 return $ f x
+                 f <$> stx
    
 instance Monad (State s) where
 -- (>>=) :: ST a -> (a -> ST b) -> ST b

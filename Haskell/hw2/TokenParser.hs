@@ -1,21 +1,21 @@
-module TokenParser where
+{-# LANGUAGE LambdaCase #-}
 
-import Control.Monad
+module TokenParser(TokenParser
+                 , token
+                 , lexem
+                 , module SlepysLexer
+                 , module Parser) where
+
+import Control.Monad.Fail
 import SlepysLexer
 import Parser
 
 type TokenParser = Parser [Token]
 
-item :: TokenParser Token
-item = makeParser $ \inp -> case inp of
-                ((l,t) : xs) -> [((l, t), xs)]
-                [] -> []
+token :: TokenParser Token
+token = makeParser $ \case
+                     ((l,t) : xs) -> [((l, t), xs)]
+                     [] -> []
 
--- sat :: (Token -> Bool) -> TokenParser String
--- sat p = do
-
-
--- newtype TokenParser a = P { parseToken :: [(LineNum, Token)] -> [(a, [(LineNum, Token)])] }
-
--- makeTokenParser :: ([(LineNum, Token)] -> [(a, [(LineNum, Token)])]) -> TokenParser a
--- makeTokenParser = P
+lexem :: TokenParser Lexem
+lexem = snd <$> token

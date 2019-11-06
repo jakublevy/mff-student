@@ -1,4 +1,22 @@
-module StringParser where
+{-# LANGUAGE LambdaCase #-}
+
+module StringParser(module Parser
+                  , StringParser
+                  , item
+                  , sat
+                  , upperCase
+                  , lowerCase
+                  , letter
+                  , digit
+                  , char
+                  , string
+                  , nat
+                  , neg
+                  , int
+                  , space
+                  , spaces
+                  , eol
+                  , eols) where
 
 import Parser
 import Data.Char(isLower, isUpper, isDigit)
@@ -6,9 +24,9 @@ import Data.Char(isLower, isUpper, isDigit)
 type StringParser = Parser String
 
 item :: StringParser Char
-item = makeParser $ \inp -> case inp of
-                (x : xs) -> [(x, xs)]
-                [] -> []
+item = makeParser $ \case 
+                    (x : xs) -> [(x, xs)]
+                    [] -> []
 
 sat :: (Char -> Bool) -> StringParser Char
 sat p = do
@@ -37,16 +55,16 @@ string :: String -> StringParser String
 string [] = pure []
 string (x : xs) = (:) <$> char x <*> string xs
 
-nat :: StringParser Int
+nat :: StringParser Integer
 nat = fmap read (some digit)
 
-neg :: StringParser Int
+neg :: StringParser Integer
 neg = do
       char '-'
       n <- nat
       return (-n)
 
-int :: StringParser Int
+int :: StringParser Integer
 int = neg <|> nat
 
 space :: StringParser Char

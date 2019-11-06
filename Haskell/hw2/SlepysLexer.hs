@@ -29,7 +29,6 @@ module SlepysLexer(Lexem(..)
                 --  , token
                  , tokens
 ) where
-import Parser
 import StringParser
 import Data.List(elemIndex)
 
@@ -39,8 +38,8 @@ type Token = (LineNum, Lexem)
 
 data Lexem = Plus
            | Minus
-           | Mult
-           | Div
+           | Asterisks
+           | Slash
            | Assign
            | Comma
            | Colon
@@ -49,6 +48,7 @@ data Lexem = Plus
            | Def
            | If
            | Else
+           | While
            | Eq
            | Lt
            | Le
@@ -59,11 +59,11 @@ data Lexem = Plus
            | IndentIn
            | IndentOut
            | Identifier String
-           | Integer Int
+           | Val Integer
            | Str String
            | Whitespace Int
            | Newline Int
-    deriving Show
+    deriving (Eq, Show)
 
 insideString :: StringParser Char
 insideString = do
@@ -94,8 +94,8 @@ identNextLetter = letter <|> char '_' <|> digit
 
 plus = char '+' >> return Plus
 minus = char '-' >> return Minus
-mult = char '*' >> return Mult
-division = char '/' >> return Div
+mult = char '*' >> return Asterisks
+division = char '/' >> return Slash
 assign = char '=' >> return Assign
 comma = char ',' >> return Comma
 colon = char ':' >> return Colon
@@ -104,6 +104,7 @@ rPar = char ')' >> return RPar
 def = string "def" >> return Def
 if_ = string "if" >> return If
 else_ = string "else" >> return Else
+while = string "while" >> return While
 eq = string "==" >> return Eq
 lt = string "<" >> return Lt
 le = string "<=" >> return Le
@@ -112,7 +113,7 @@ ge = string ">=" >> return Ge
 semicolon = char ';' >> return Semicolon
 pass = string "pass" >> return Pass
 identifier = ident >>= \n -> return $ Identifier n
-integer = int >>= \n -> return $ Integer n
+integer = int >>= \n -> return $ Val n
 str = quotedString >>= \s -> return $ Str s
 whitespace = spaces >>= \n -> return $ Whitespace n
 newline = eols >>= \n -> return $ Newline n
@@ -130,6 +131,7 @@ lexem = plus
     <|> def
     <|> if_
     <|> else_
+    <|> while
     <|> eq
     <|> lt
     <|> le

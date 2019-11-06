@@ -1,35 +1,31 @@
 module Types where
-import Text.Megaparsec
-import Data.Void
 
-data ROp = Eq
-         | Lt
-         | Le
-         | Gt
-         | Ge
+type Identifier = (Int, String)
 
-data BExpr = Expr ROp Expr
 
 data Expr = IntConst Integer
           | StringConst String
-          | Identifier String
+          | Id Identifier
           | Add Expr Expr
           | Sub Expr Expr
           | Mult Expr Expr
           | Div Expr Expr
-          | Assignment String Expr
           | Call String [Expr]
+          | Equal Expr Expr
+          | Less Expr Expr
+          | Greater Expr Expr
+          | LessOrEqual Expr Expr
+          | GreaterOrEqual Expr Expr
 
-data Method = Method { identifier :: String 
-                     , parameters :: [Expr]
+data Method = Method { identifier :: Identifier 
+                     , parameters :: [Identifier]
                      , body :: [Statement]
                      }
 
 data Statement = E Expr
-               | While BExpr [Statement]
-               | If BExpr [Statement] [Statement]
+               | While Expr [Statement]
+               | If Expr [Statement] [Statement]
                | MethodDef Method
+               | Assignment Identifier Expr
 
 type Slepys = [Statement]
-
-type Parser = Parsec Void String

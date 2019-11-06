@@ -1,5 +1,6 @@
+import SlepysParser
 import SlepysLexer
-import Parser
+
 import Data.List
 import System.Environment
 import System.Exit
@@ -21,7 +22,7 @@ main = do
      if "--help" `elem` args || "-help" `elem` args || "-h" `elem` args then do
         printHelp
         exitSuccess
-     else --to some work with arguments
+     else --some work with arguments
         foldl (\_ f -> processFile f) (return ()) args
 
 processFile :: FilePath -> IO ()
@@ -31,14 +32,15 @@ processFile fileN = do
                     if fileExists then do
                        h <- openFile fileN ReadMode 
                        buf <- hGetContents h
-                       lexAnalysis buf
+                       ast <- createAst buf
+
                        return () 
                     else do
                         putStrLn $ "   " ++ "ERROR: does not appear to be existing file"
                         exitWith $ ExitFailure 10
 
-lexAnalysis :: String -> IO ()
-lexAnalysis buf = case tokens buf of
+createAst :: String -> IO Slepys
+createAst buf = case tokens buf of
                      Right tok -> do
                                   putStrLn "   Lexical Analysis: OK"
                                   parsing tok
@@ -46,8 +48,14 @@ lexAnalysis buf = case tokens buf of
                                  putStrLn $ "   Lexical Analysis: ERROR - " ++ msg
                                  exitWith $ ExitFailure 20 
                     
-parsing :: [Token] -> IO ()
-parsing ts = return ()
+parsing :: [Token] -> IO Slepys
+parsing ts = case parseTokens ts of
+                  Right ast -> do
+                               putStrLn "   Parsing: OK"
+                               return ast
+                  Left msg -> do
+                              putStrLn $ "   Parsing: ERROR - " ++ msg
+                              exitWith $ ExitFailure 30
 
 
 printHelp :: IO ()

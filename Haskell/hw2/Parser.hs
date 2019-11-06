@@ -1,6 +1,7 @@
 module Parser(Parser(parse), makeParser, (<|>), empty, some, many) where
 
 import Control.Applicative
+import Control.Monad.Fail
 
 newtype Parser s a = P { parse :: s -> [(a, s)] }
 
@@ -26,7 +27,7 @@ instance Monad (Parser s) where
 
 instance Alternative (Parser s) where
  -- empty :: Parser a
-    empty = P $ \_ -> []
+    empty = P $ const []
 
  -- (<|>) :: Parser a -> Parser a -> Parser a
     P p1 <|> P p2 = P $ \inp -> case p1 inp of 
@@ -38,3 +39,6 @@ instance Alternative (Parser s) where
 
  -- some :: Parser a -> Parser [a]
     some p = (:) <$> p <*> many p
+
+instance MonadFail (Parser a) where
+    fail msg = empty
