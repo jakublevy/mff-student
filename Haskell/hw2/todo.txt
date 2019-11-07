@@ -1,4 +1,1 @@
-opravit state monad
-remove trailing newlines na zacatku
-vyresit nekvalitni kody podle linteru
-kazdy indent in se udela 2x
+semanticka analyza

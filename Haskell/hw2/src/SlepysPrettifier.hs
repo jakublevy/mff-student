@@ -1,8 +1,7 @@
 module SlepysPrettifier where
 
 import SlepysParser
--- import State
-import Control.Monad.State
+import State
 import Data.List(intercalate)
 
 type Indent = Int
@@ -26,7 +25,9 @@ surround :: String -> String
 surround s = "\"" ++ s ++ "\""
 
 prettify :: Slepys -> String
-prettify slepys = evalState (prettifyStatements slepys) 0
+prettify slepys = lTrim $ evalState (prettifyStatements slepys) 0
+    where 
+        lTrim = dropWhile (== '\n')
 
 prettifyIfWhile :: String -> Expr -> [Statement] -> State Indent String
 prettifyIfWhile kw e stmts = do
@@ -34,14 +35,14 @@ prettifyIfWhile kw e stmts = do
                              indentIn
                              sPretty <- prettifyStatements stmts
                              indentOut
-                             kwInd <- indentedPrint <$> get <*> pure (kw ++ " ")
-                             closeBracket <- indentedPrint <$> get <*> pure "}\n"
+                             kwInd <- gets indentedPrint <*> pure (kw ++ " ")
+                             closeBracket <- gets indentedPrint <*> pure "}\n"
                              return $ kwInd ++ ePretty ++ ": {\n" ++ sPretty ++ closeBracket
 
 prettifyStatement :: Statement -> State Indent String
 prettifyStatement (Expr e) = do 
-                             ePretty <- indentedPrint <$> get <*> prettifyExpr e
-                             return $ ePretty ++ "\n"
+                             ePretty <- gets indentedPrint <*> prettifyExpr e
+                             return $ ePretty ++ ";\n"
 
 prettifyStatement (While e stmts) = prettifyIfWhile "while" e stmts
 prettifyStatement (If e stmts []) = prettifyIfWhile "if" e stmts
@@ -51,32 +52,33 @@ prettifyStatement (If e stmts1 stmts2) = do
                                        indentIn
                                        elseSPretty <- prettifyStatements stmts2
                                        indentOut
-                                       else_ <- indentedPrint <$> get <*> pure "else"
-                                       return $ if_ ++ else_ ++ ":\n" ++ elseSPretty
+                                       else_ <- gets indentedPrint <*> pure "else"
+                                       closeBracket <- gets indentedPrint <*> pure "}\n"
+                                       return $ if_ ++ else_ ++ ": {\n" ++ elseSPretty ++ closeBracket
                             
 prettifyStatement (Assignment id e) = do
-                                      idPretty <- indentedPrint <$> get <*> prettifyExpr (Id id)
+                                      idPretty <- gets indentedPrint <*> prettifyExpr (Id id)
                                       ePretty <- prettifyExpr e
-                                      return $ idPretty ++ " = " ++ ePretty ++ "\n"
+                                      return $ idPretty ++ " = " ++ ePretty ++ ";\n"
 
-prettifyStatement Skip = indentedPrint <$> get <*> pure "pass\n"
+prettifyStatement Skip = gets indentedPrint <*> pure "pass;\n"
 prettifyStatement (MethodDef m) = do
                                   headerPretty <- prettifyMethodHeader (header m)
                                   indentIn
                                   bodyPretty <- prettifyStatements (body m)
                                   indentOut
-                                  closeBracket <- indentedPrint <$> get <*> pure "}\n"
+                                  closeBracket <- gets indentedPrint <*> pure "}\n"
                                   return $ "\n" ++ headerPretty ++ "\n" ++ bodyPretty ++ closeBracket ++ "\n"
 
 prettifyMethodHeader :: MethodHeader -> State Indent String
 prettifyMethodHeader mh = do
-                          def <- indentedPrint <$> get <*> pure "def "
+                          def <- gets indentedPrint <*> pure "def "
                           return $ def ++ snd (identifier mh) ++ joinParameters (map snd $ parameters mh) ++ ": {"
 
 prettifyStatements :: [Statement] -> State Indent String
 prettifyStatements [] = pure []
 prettifyStatements (s : stmts) = do
-                                 sPretty <- indentedPrint <$> get <*> prettifyStatement s
+                                 sPretty <- prettifyStatement s
                                  rest <- prettifyStatements stmts
                                  return $ sPretty ++ rest
 
@@ -88,7 +90,9 @@ prettifyExpr (IntConst n) = pure (show n)
 prettifyExpr (StringConst s) = pure (surround s)
 prettifyExpr (Id (_, n)) = pure n
 
-prettifyExpr (Call (_, n) es) = (\esPretty -> n ++ joinParameters esPretty) <$> prettifyExprs es
+prettifyExpr (Call (i, n) ess) = do 
+                                 essPretty <- prettifyCallsParams ess
+                                 return $ n ++ essPretty
     where
         prettifyExprs :: [Expr] -> State Indent [String]
         prettifyExprs [] = pure []
@@ -96,7 +100,18 @@ prettifyExpr (Call (_, n) es) = (\esPretty -> n ++ joinParameters esPretty) <$> 
                                  ePretty <- prettifyExpr e
                                  rest <- prettifyExprs es
                                  return $ ePretty : rest
-                            
+
+        prettifyCallParams :: [Expr] -> State Indent String
+        prettifyCallParams es = joinParameters <$> prettifyExprs es
+
+        prettifyCallsParams :: [[Expr]] -> State Indent String
+        prettifyCallsParams [] = pure []
+        prettifyCallsParams (es : ess) = do
+                                         esPretty <- prettifyCallParams es
+                                         essPretty <- prettifyCallsParams ess
+                                         return $ esPretty ++ essPretty
+                                           
+
 --binary cases
 prettifyExpr e = case e of
                    Add e1 e2 -> prettifyBinExpr e1 "+" e2

@@ -1,11 +1,15 @@
-def test(x): print(x+x)
-i=0
-j=read()
-while i<j:
-   test(i)
-   i=i+1
+def a(rec):
+  def f():
+    rec()
+  f;
 
-k = 11
+def fix(f):
+  def fomega(x): f(x(x))
+  fomega(fomega)
 
-if i > j:
-   print("ahoj")
+fix(a)()
+
+if i == j:
+   while i < 10: print("ahoj"); print("ahoj2");
+   f;
+neco;

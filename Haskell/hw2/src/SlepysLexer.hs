@@ -123,6 +123,7 @@ lexem = plus
     <|> minus
     <|> mult
     <|> division
+    <|> eq
     <|> assign
     <|> comma
     <|> colon
@@ -132,7 +133,6 @@ lexem = plus
     <|> if_
     <|> else_
     <|> while
-    <|> eq
     <|> lt
     <|> le
     <|> gt

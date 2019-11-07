@@ -18,7 +18,7 @@ data Expr = IntConst Integer
           | Sub Expr Expr
           | Mult Expr Expr
           | Div Expr Expr
-          | Call Id [Expr]
+          | Call Id [[Expr]]
           | Equal Expr Expr
           | Less Expr Expr
           | Greater Expr Expr
@@ -70,15 +70,17 @@ methodHeader = do
 blockBody :: TokenParser [Statement]
 blockBody = do
             IndentIn <- lexem
-            stms <- some statement <|> pass
+            stms <- some statement 
             IndentOut <- lexem
             return stms
-        <|> (: []) <$> statement
-        <|> pass
+        -- <|> (: []) <$> statement
+        <|> stmtsSemicolonTerm
 
 
-pass :: TokenParser [Statement]
-pass = (\Pass -> [Skip]) <$> lexem
+pass :: TokenParser Statement
+pass = do
+       Pass <- lexem
+       return Skip
 
 
 method :: TokenParser Statement
@@ -100,10 +102,12 @@ factor =     do
             return $ StringConst s
          <|> do
             (i, Identifier id) <- token
-            LPar <- lexem
-            args <- arguments 
-            RPar <- lexem
-            return $ Call (i, id) args
+            xss <- some $ do
+                   LPar <- lexem
+                   args <- arguments 
+                   RPar <- lexem
+                   return args
+            return $ Call (i, id) xss
          <|> do
             (i, Identifier id) <- token
             return $ Id (i, id)
@@ -127,6 +131,7 @@ createExpr e1 (Gt, e2) = Greater e1 e2
 createExpr e1 (Lt, e2) = Less e1 e2
 createExpr e1 (Ge, e2) = GreaterOrEqual e1 e2
 createExpr e1 (Le, e2) = LessOrEqual e1 e2
+createExpr e1 (Eq, e2) = Equal e1 e2
 createExpr e1 (Plus, e2) = Add e1 e2
 createExpr e1 (Minus, e2) = Sub e1 e2
 createExpr e1 (Asterisks, e2) = Mult e1 e2
@@ -181,6 +186,29 @@ booleanExpr = do
                  return e
               else empty 
 
+semicolon :: TokenParser Lexem
+semicolon = do
+            Semicolon <- statementEnd
+            return Semicolon
+
+stmtsSemicolonTerm :: TokenParser [Statement]
+stmtsSemicolonTerm = do
+                     t <- top
+                     case t of
+                        (_, Newline _) -> empty
+                        _ -> do
+                             s <- assignment <|> pass <|> do Expr <$> expr
+                             end <- statementEnd
+                             case end of 
+                                Semicolon -> do
+                                     many semicolon
+                                     t <- top
+                                     case t of
+                                        (_, Newline _) -> return [s]
+                                        _ -> do
+                                             ss <- stmtsSemicolonTerm 
+                                             return $ s : ss
+                                (Newline _) -> return [s]
 
 statement :: TokenParser Statement
 statement =     do
@@ -198,12 +226,13 @@ statement =     do
                         return $ SlepysParser.If be b []
                 else 
                         return $ SlepysParser.While be b
-            <|> assignment
-            <|> method
+
             <|> do
-                e <- expr
+                s <- assignment <|> pass <|> do Expr <$> expr
                 some statementEnd
-                return $ Expr e
+                return s
+
+            <|> method
 
 statementEnd :: TokenParser Lexem
 statementEnd = do
@@ -220,7 +249,8 @@ relOp = do
         if    l == Gt
            || l == Lt
            || l == Ge
-           || l == Le then return l
+           || l == Le 
+           || l == Eq then return l
                       else empty
 
 binOp2 :: TokenParser Lexem
@@ -241,12 +271,18 @@ assignment :: TokenParser Statement
 assignment = do
              (i, Identifier n) <- token
              Assign <- lexem
-             e <- expr
-             some statementEnd
-             return $ Assignment (i, n) e
+             Assignment (i, n) <$> expr
+
+trailingNewline :: TokenParser Lexem
+trailingNewline = do
+                  (_, Newline n) <- next
+                  return $ Newline n
 
 slepys :: TokenParser Slepys
-slepys = many statement
+slepys = do 
+         prog <- many statement
+         many trailingNewline
+         return prog
 
 parseTokens :: [Token] -> Either String Slepys
 parseTokens tok = case parse slepys tok of

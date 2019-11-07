@@ -59,7 +59,7 @@ createAst buf = case tokens buf of
                      Right tok -> do
                                   putStrLn "   Lexical Analysis: OK"
 
-                                 --  putStrLn (intercalate "\n" (map show tok))
+                                  putStrLn (intercalate "\n" (map show tok))
 
                                   parsing tok
                      Left msg -> do 
