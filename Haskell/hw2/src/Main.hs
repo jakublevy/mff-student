@@ -1,11 +1,13 @@
 import SlepysParser
 import SlepysLexer
+import SlepysPrettifier
 
 import Data.List
 import System.Environment
 import System.Exit
 import System.Directory
 import System.IO
+import System.FilePath(replaceExtension)
 
 -- main :: IO ()
 -- main = do
@@ -33,16 +35,32 @@ processFile fileN = do
                        h <- openFile fileN ReadMode 
                        buf <- hGetContents h
                        ast <- createAst buf
+                       outputPretty fileN ast
+
+                       putStrLn ""
+                       print ast
+                       
 
                        return () 
                     else do
                         putStrLn $ "   " ++ "ERROR: does not appear to be existing file"
                         exitWith $ ExitFailure 10
 
+outputPretty :: FilePath -> Slepys -> IO ()
+outputPretty origFileN ast = do
+                         let newFileN = replaceExtension origFileN "pretty"
+                         h <- openFile newFileN WriteMode
+                         hPutStr h (prettify ast)
+                         hClose h
+
+
 createAst :: String -> IO Slepys
 createAst buf = case tokens buf of
                      Right tok -> do
                                   putStrLn "   Lexical Analysis: OK"
+
+                                 --  putStrLn (intercalate "\n" (map show tok))
+
                                   parsing tok
                      Left msg -> do 
                                  putStrLn $ "   Lexical Analysis: ERROR - " ++ msg

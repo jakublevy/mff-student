@@ -1,5 +1,10 @@
 module SlepysParser(parseTokens
                   , Slepys
+                  , Expr(..)
+                  , Id
+                  , Method(..)
+                  , MethodHeader(..)
+                  , Statement(..)
                   ) where
 
 import TokenParser
@@ -24,17 +29,20 @@ data Expr = IntConst Integer
 data Method = Method { header :: MethodHeader
                      , body :: [Statement]
                      }
+            deriving (Show) --todo: remove
 
 data MethodHeader = MethodHeader { identifier :: Id 
                                  , parameters :: [Id]
                                  }
+                    deriving (Show) -- todo: remove
 
 data Statement = Expr Expr
                | While Expr [Statement]
                | If Expr [Statement] [Statement]
                | MethodDef Method
                | Assignment Id Expr
-               | Skip
+               | Skip 
+            deriving (Show) -- todo: remove
 
 type Slepys = [Statement]
 
@@ -65,11 +73,13 @@ blockBody = do
             stms <- some statement <|> pass
             IndentOut <- lexem
             return stms
+        <|> (: []) <$> statement
+        <|> pass
+
 
 pass :: TokenParser [Statement]
-pass = do
-       Pass <- lexem
-       return [Skip]
+pass = (\Pass -> [Skip]) <$> lexem
+
 
 method :: TokenParser Statement
 method = do
@@ -81,8 +91,6 @@ method = do
          }
          return $ MethodDef m
 
-    
-   
 factor :: TokenParser Expr
 factor =     do
             Val n <- lexem
@@ -128,7 +136,7 @@ functor :: TokenParser Expr
 functor = do
           f <- factor
           funcOps <- many $ do
-                            op <- relOp
+                            op <- binOp1
                             e <- factor
                             return (op, e)
           return $ foldl createExpr f funcOps
@@ -146,7 +154,7 @@ expr :: TokenParser Expr
 expr = do
        t <- term
        termOps <- many $ do
-                         op <- binOp3
+                         op <- relOp
                          t <- term
                          return (op, t)
        return $ foldl createExpr t termOps
@@ -192,38 +200,55 @@ statement =     do
                         return $ SlepysParser.While be b
             <|> assignment
             <|> method
+            <|> do
+                e <- expr
+                some statementEnd
+                return $ Expr e
+
+statementEnd :: TokenParser Lexem
+statementEnd = do
+               n <- next
+               case n of
+                    (_, Semicolon) -> return Semicolon
+                    (_, Newline n) -> return $ Newline n
+                    _ -> empty
                 
 
 relOp :: TokenParser Lexem
-relOp = g <$> lexem
-    where
-        g l |   l == Gt
-             || l == Lt
-             || l == Ge
-             || l == Le = l
+relOp = do
+        l <- lexem
+        if    l == Gt
+           || l == Lt
+           || l == Ge
+           || l == Le then return l
+                      else empty
 
 binOp2 :: TokenParser Lexem
-binOp2 = g <$> lexem
-    where
-        g l |   l == Plus
-             || l == Minus = l
+binOp2 = do
+         l <- lexem
+         if   l == Plus
+           || l == Minus then return l
+                         else empty
 
-binOp3 :: TokenParser Lexem
-binOp3 = g <$> lexem
-    where
-        g l |   l == Asterisks
-             || l == Slash     = l
+binOp1 :: TokenParser Lexem
+binOp1 = do
+         l <- lexem
+         if   l == Asterisks
+           || l == Slash    then return l
+                            else empty
 
 assignment :: TokenParser Statement
 assignment = do
              (i, Identifier n) <- token
              Assign <- lexem
-             Assignment (i, n) <$> expr
+             e <- expr
+             some statementEnd
+             return $ Assignment (i, n) e
 
-slepys :: TokenParser [Statement]
+slepys :: TokenParser Slepys
 slepys = many statement
 
-parseTokens :: [Token] -> Either String [Statement]
+parseTokens :: [Token] -> Either String Slepys
 parseTokens tok = case parse slepys tok of
                     [(stms, [])] -> Right stms
                     [] -> Left "Undefined parsing error occurred"

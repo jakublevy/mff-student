@@ -1,7 +1,4 @@
-odstranit levou rekurzi
-naparsovat tokeny do stromu 
-    pouze u identifikatoru potrebujeme znat cislo radky (funkce nebo promenne)
-
-
-najebat TokenParser
-    nacist vysledek do nejakeho stromu, kde budou mit tokeny cislo radky
+opravit state monad
+remove trailing newlines na zacatku
+vyresit nekvalitni kody podle linteru
+kazdy indent in se udela 2x

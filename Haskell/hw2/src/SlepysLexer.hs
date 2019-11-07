@@ -155,22 +155,40 @@ tokens inp = case lex of
               [(_, xs)] -> Left $ "Undefined lexeme " ++ [head xs]
   where lex = parse lexems inp
 
+-- addCtx :: [Lexem] -> [Token] -> LineNum -> [Indent] -> Either String [Token]
+-- addCtx [] acc l iS = Right $ reverse $ replicate (length iS - 1) (l,IndentOut) ++ acc
+
+-- addCtx [Whitespace _] acc l iS = addCtx [] acc l iS
+-- addCtx [Newline n] acc l iS = addCtx [] acc (l+n) iS
+-- addCtx [tok] acc l iS = addCtx [] ((l, tok) : acc) l iS
+
+-- addCtx (Newline n : Whitespace m : ts) acc l i | m == head i = addCtx ts acc (l+n) i
+--                                                    | m > head i = addCtx ts ((l+n, IndentIn) : acc) (l+n) (m:i)
+--                                                    | m < head i = case m `elemIndex` i of
+--                                                                       Just k -> addCtx ts (replicate k (l+n, IndentOut) ++ acc) (l+n) (drop k i)
+--                                                                       Nothing -> Left $ "Incorrect attempt to IndentOut on line " ++ show (l+n)
+
+-- addCtx (Whitespace m : ts) acc l i = addCtx ts acc l i
+-- addCtx (Newline n : ts) acc l i | i == [0]    = addCtx ts acc (l+n) [0]
+--                                     | otherwise = addCtx ts (replicate (length i -1) (l+n, IndentOut) ++ acc) (l+n) [0]
+
+-- addCtx (t : ts) acc l i = addCtx ts ((l,t) : acc) l i 
+
 addCtx :: [Lexem] -> [Token] -> LineNum -> [Indent] -> Either String [Token]
-addCtx [] acc l iS = Right $ reverse $ replicate (length iS - 1) (l,IndentOut) ++ acc
+addCtx [] acc l iS = Right $ reverse $ replicate (length iS - 1) (l,IndentOut) ++ (l, Newline 1) : acc
 
 addCtx [Whitespace _] acc l iS = addCtx [] acc l iS
-addCtx [Newline n] acc l iS = addCtx [] acc (l+n) iS
+addCtx [Newline n] acc l iS = addCtx [] ((l, Newline n) : acc) (l+n) iS
 addCtx [tok] acc l iS = addCtx [] ((l, tok) : acc) l iS
 
-addCtx (Newline n : Whitespace m : ts) acc l i | m == head i = addCtx ts acc (l+n) i
-                                                   | m > head i = addCtx ts ((l+n, IndentIn) : acc) (l+n) (m:i)
+addCtx (Newline n : Whitespace m : ts) acc l i | m == head i = addCtx ts ((l, Newline n) : acc) (l+n) i
+                                                   | m > head i = addCtx ts ((l+n, IndentIn) : (l, Newline n) : acc) (l+n) (m:i)
                                                    | m < head i = case m `elemIndex` i of
-                                                                      Just k -> addCtx ts (replicate k (l+n, IndentOut) ++ acc) (l+n) (drop k i)
+                                                                      Just k -> addCtx ts (replicate k (l+n, IndentOut) ++ (l, Newline n ) : acc) (l+n) (drop k i)
                                                                       Nothing -> Left $ "Incorrect attempt to IndentOut on line " ++ show (l+n)
 
 addCtx (Whitespace m : ts) acc l i = addCtx ts acc l i
-addCtx (Newline n : ts) acc l i | i == [0]    = addCtx ts acc (l+n) [0]
-                                    | otherwise = addCtx ts (replicate (length i -1) (l+n, IndentOut) ++ acc) (l+n) [0]
+addCtx (Newline n : ts) acc l i | i == [0]    = addCtx ts ((l, Newline n) : acc) (l+n) [0]
+                                | otherwise = addCtx ts (replicate (length i -1) (l+n, IndentOut) ++ (l, Newline n) : acc) (l+n) [0]
 
 addCtx (t : ts) acc l i = addCtx ts ((l,t) : acc) l i 
-
