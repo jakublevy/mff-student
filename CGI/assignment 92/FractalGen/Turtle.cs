@@ -15,7 +15,7 @@ namespace JakubLevy
     /// <param name="startingPoint">the starting location to draw</param>
     /// <param name="directionPoint"> (1,0) means "right", (-1, 0) means left, (0,1) means down, (0,-1) means up </param>
     /// <param name="colors"> associated colors with moving letter </param>
-    public Turtle (string sentence, double lineLength, double rotationAngle, Point startingPoint,
+    public Turtle (string sentence, float lineLength, float rotationAngle, PointF startingPoint,
       Point directionPoint, Dictionary<char, Color> colors)
     {
       Sentence = sentence;
@@ -28,9 +28,9 @@ namespace JakubLevy
     }
 
     public string Sentence { get; }
-    public double LineLength { get; }
-    public double RotationAngle { get; }
-    public Point StartingPoint { get; }
+    public float LineLength { get; }
+    public float RotationAngle { get; }
+    public PointF StartingPoint { get; }
 
     public Point DirectionPoint { get; }
 
@@ -38,15 +38,15 @@ namespace JakubLevy
 
     public List<DrawInfo> DrawInfo { get; } = new List<DrawInfo>(); //all information needed to redraw a fractal
 
-    public int Top { get; private set; } = int.MaxValue;
-    public int Bottom { get; private set; } = int.MinValue;
-    public int Left { get; private set; } = int.MaxValue;
-    public int Right { get; private set; } = int.MinValue;
+    private float top = int.MaxValue;
+    private float bottom = int.MinValue;
+    private float left  = int.MaxValue;
+    private float right  = int.MinValue;
 
-    public int Width => Right - Left;
-    public int Height => Bottom - Top;
+    public float Width => right - left;
+    public float Height => bottom - top;
 
-    public int Size => Math.Max(Width, Height);
+    public float Size => Math.Max(Width, Height);
 
     /// <summary>
     ///   Disconnects the panel from Turtle and releases memory
@@ -55,6 +55,18 @@ namespace JakubLevy
     {
       Colors.Clear();
       DrawInfo.Clear();
+    }
+
+    public void TranslateCenter (PointF center)
+    {
+      float shiftX = center.X - Width / 2f - left;
+      float shiftY = center.Y - Height / 2f - top;
+      PointF shift = new PointF(shiftX, shiftY);
+      DrawInfo.ForEach(x =>
+      {
+        x.Start = Utils.AddVectors(x.Start, shift);
+        x.End = Utils.AddVectors(x.End, shift);
+      });
     }
 
     private void Render ()
@@ -112,24 +124,24 @@ namespace JakubLevy
             DrawInfo.Add(new DrawInfo {Start = currentState.Location, End = newLocation, Pen = p});
             currentState.Location = newLocation;
 
-            if (currentState.Location.X < Left)
+            if (currentState.Location.X < left)
             {
-              Left = (int)currentState.Location.X;
+              left = currentState.Location.X;
             }
 
-            if (currentState.Location.X > Right)
+            if (currentState.Location.X > right)
             {
-              Right = (int)currentState.Location.X;
+              right = currentState.Location.X;
             }
 
-            if (currentState.Location.Y < Top)
+            if (currentState.Location.Y < top)
             {
-              Top = (int) currentState.Location.Y;
+              top = currentState.Location.Y;
             }
 
-            if (currentState.Location.Y > Bottom)
+            if (currentState.Location.Y > bottom)
             {
-              Bottom = (int) currentState.Location.Y;
+              bottom = currentState.Location.Y;
             }
           }
         }
@@ -140,7 +152,7 @@ namespace JakubLevy
   struct State
   {
     public PointF Location { get; set; }
-    public double CurrentAngle { get; set; }
+    public float CurrentAngle { get; set; }
   }
 
   class DrawInfo

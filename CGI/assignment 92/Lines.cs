@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using JakubLevy;
 using LineCanvas;
 using Utilities;
@@ -32,7 +33,8 @@ namespace _092lines
       param = "islandsAndLakes, gen=2";
 
       // Tooltip = help.
-      tooltip = "[koch|kochAnti|kochQuadratic|tree|binTree|flower|bush|fern|islandsAndLakes|map|brokenWindow|dragon|levyCCurve|sierpinski], gen=<int>, antialiasing=<bool>";
+      tooltip =
+        "[koch|kochAnti|kochQuadratic|tree|binTree|flower|bush|fern|islandsAndLakes|map|brokenWindow|dragon|levyCCurve|sierpinski], gen=<int>, antialiasing=<bool>";
 
       // }}
     }
@@ -105,14 +107,17 @@ namespace _092lines
       {
         KochQuadratic(c, gen);
       }
+
       if (tree)
       {
         Tree(c, gen);
       }
+
       if (binTree)
       {
         BinTree(c, gen);
       }
+
       if (flower)
       {
         Flower(c, gen);
@@ -122,10 +127,12 @@ namespace _092lines
       {
         Bush(c, gen);
       }
+
       if (fern)
       {
         Fern(c, gen);
       }
+
       if (islandsAndLakes)
       {
         IslandsAndLakes(c, gen);
@@ -167,165 +174,165 @@ namespace _092lines
       }
     }
 
-    private static void AdjustTurtle (Canvas c, string sentence, string name, int gen, int rotationAngle, Point dir, Dictionary<char, Color> colorMappings)
+    private static Turtle BinarySearch (int maxG, float currMin, float currMax, string sentence, float rotationAngle, Point dir, Dictionary<char, Color> colorMappings)
+    {
+      Stack<Turtle> output = new Stack<Turtle>();
+      while (currMin <= currMax)
+      {
+        float ce = (currMin + currMax) / 2f;
+        Turtle t = new Turtle(sentence, ce, rotationAngle, PointF.Empty, dir, colorMappings);
+        if (Math.Abs(t.Size) < 0.01f)
+        {
+          output.Push(t);
+          break;
+        }
+
+        if (t.Size < maxG)
+        {
+          currMin = ce + 0.5f;
+          output.Push(t);
+        }
+        else if (t.Size > maxG)
+        {
+          currMax = ce - 0.5f;
+        }
+      }
+
+      if (output.Any())
+      {
+
+        if (output.Peek().Size < 0.01f)
+        {
+          return output.Peek();}
+
+        Turtle t = output.Pop();
+        float lineL = t.LineLength;
+        do
+        {
+          output.Push(t);
+          lineL += 0.1f;
+          t = new Turtle(sentence, lineL, rotationAngle, PointF.Empty, dir, colorMappings);
+        } while (t.Size < maxG);
+
+        return output.Peek();
+      }
+
+      return null;
+    }
+
+    private static void RenderLsystem (Canvas c, string sentence, string name, int gen, float rotationAngle, Point dir, Dictionary<char, Color> colorMappings)
     {
       int m = Math.Min(c.Width, c.Height);
 
-      int min = 1;
-      int max = (int) (m / 2.0);
-      int ce = (max + min) / 2;
-
-      Point tStart = new Point((int)(0.5 * c.Width), (int)(0.5 * c.Height));
-      Turtle t = new Turtle(sentence, ce, rotationAngle, tStart, dir, colorMappings);
-
-      if (t.Size == 0) return;
-
-      while (t.Size > m)
-      {
-        max = ce;
-        ce = (max + min) / 2;
-        t = new Turtle(sentence, ce, rotationAngle, tStart, dir, colorMappings);
-
-        if (max == min)
-          break;
+      float min = 0.1f;
+      float max = (m / 2f);
+      Turtle t = BinarySearch(m, min, max, sentence, rotationAngle, dir, colorMappings);
+      if (t != null)
+      {t.TranslateCenter(new PointF(c.Width / 2f, c.Height / 2f));
+        PerformDrawing(c, t.DrawInfo);
       }
-
-      while (m - t.Size > 50)
-      {
-        ce++;
-        t = new Turtle(sentence, ce, rotationAngle, tStart, dir, colorMappings);
-      }
-
-      --ce;
-      t = new Turtle(sentence, ce, rotationAngle, tStart, dir, colorMappings);
-      if (t.Size < m && t.Size > 0)
-      {
-        List<DrawInfo> dis = t.DrawInfo;
-        float shiftX = 0.5f * c.Width - t.Width / 2f - t.Left;
-        float shiftY = 0.5f * c.Height - t.Height / 2f - t.Top;
-        PointF shift = new PointF(shiftX, shiftY);
-        dis.ForEach(x =>
-        {
-          x.Start = Utils.AddVectors(x.Start, shift);
-          x.End = Utils.AddVectors(x.End, shift);
-        });
-
-        //PointF topLeft = Utils.AddVectors(new PointF(t.Left, t.Top), shift);
-        //PointF topRight = Utils.AddVectors(new PointF(t.Right, t.Top), shift);
-        //PointF bottomLeft = Utils.AddVectors(new PointF(t.Left, t.Bottom), shift);
-        //PointF bottomRight = Utils.AddVectors(new PointF(t.Right, t.Bottom), shift);
-
-        //c.Line(topLeft.X, topLeft.Y, topRight.X, topRight.Y);
-        //c.Line(topLeft.X, topLeft.Y, bottomLeft.X, bottomLeft.Y);
-        //c.Line(topRight.X, topRight.Y, bottomRight.X, bottomRight.Y);
-        //c.Line(bottomLeft.X, bottomLeft.Y, bottomRight.X, bottomRight.Y);
-
-        PerformDrawing(c, dis);
-
-      }
-      else
+      else 
       {
         Utils.ShowErrorMessageBox($"Cannot fit generation {gen} of {name} into canvas {c.Width}x{c.Height}.\nIncrease canvas size and try again.");
       }
-
     }
 
-    private static void Koch (Canvas c, int gen)
+  private static void Koch (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F++F++F", new Dictionary<char, string>{ { 'F', "F-F++F-F" }});
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Koch's snowflake", gen, 60, new Point(1, 0), new Dictionary<char, Color>());
+      RenderLsystem(c, lsys.Sentence, "Koch's snowflake", gen, 60, new Point(1, 0), new Dictionary<char, Color>());
     }
 
     private static void KochAnti (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F++F++F", new Dictionary<char, string>{ { 'F', "F+F--F+F" }});
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Koch's anti-snowflake", gen, 60, new Point(1, 0), new Dictionary<char, Color>());
+      RenderLsystem(c, lsys.Sentence, "Koch's anti-snowflake", gen, 60, new Point(1, 0), new Dictionary<char, Color>());
     }
 
     private static void KochQuadratic (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F-F-F-F", new Dictionary<char, string>{ { 'F', "F-F+F+FF-F-F+F" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Koch's quadratic island", gen, 90, new Point(1, 0), new Dictionary<char, Color>());
+      RenderLsystem(c, lsys.Sentence, "Koch's quadratic island", gen, 90, new Point(1, 0), new Dictionary<char, Color>());
     }
 
     private static void Tree (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("M", new Dictionary<char, string>{ { 'M', "S[+M][-M]SM" }, {'S', "SS"} });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Tree", gen, 45, new Point(0, -1), new Dictionary<char, Color> { { 'M', Color.DarkGreen }, { 'S', Color.SaddleBrown } });
+      RenderLsystem(c, lsys.Sentence, "Tree", gen, 45, new Point(0, -1), new Dictionary<char, Color> { { 'M', Color.DarkGreen }, { 'S', Color.SaddleBrown } });
     }
 
     private static void BinTree (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F", new Dictionary<char, string>{ { 'F', "G[+F]-F" }, {'G', "GG"} });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Binary tree", gen, 45, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.DarkGreen }, { 'G', Color.SaddleBrown } });
+      RenderLsystem(c, lsys.Sentence, "Binary tree", gen, 45, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.DarkGreen }, { 'G', Color.SaddleBrown } });
     }
 
     private static void Flower (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F", new Dictionary<char, string>{ { 'F', "F[+F]F[-F]F" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Flower", gen, 25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.FromArgb(128, 128, 64) } });
+      RenderLsystem(c, lsys.Sentence, "Flower", gen, 25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.FromArgb(128, 128, 64) } });
     }
 
     private static void Bush (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F", new Dictionary<char, string>{ { 'F', "FF+[+F-F-F]-[-F+F+F]" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Bush", gen, -25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.FromArgb(0, 64, 0) } });
+      RenderLsystem(c, lsys.Sentence, "Bush", gen, -25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.FromArgb(0, 64, 0) } });
     }
 
     private static void Fern (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("G", new Dictionary<char, string>{ { 'G', "F+[[G]-G]-F[-FG]+G" }, { 'F', "FF" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Fern", gen, 25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.DarkGreen }, { 'G', Color.DarkGreen } });
+      RenderLsystem(c, lsys.Sentence, "Fern", gen, 25, new Point(0, -1), new Dictionary<char, Color> { { 'F', Color.DarkGreen }, { 'G', Color.DarkGreen } });
     }
 
     private static void IslandsAndLakes (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F+F+F+F", new Dictionary<char, string>{ { 'F', "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF" }, { 'f', "ffffff" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Islands and lakes", gen, 90, new Point(1, 0), new Dictionary<char, Color>());
+      RenderLsystem(c, lsys.Sentence, "Islands and lakes", gen, 90, new Point(1, 0), new Dictionary<char, Color>());
     }
 
     private static void Map (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F-F-F-F", new Dictionary<char, string>{ { 'F', "F-FF--F-F" }});
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Map", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'F', Color.FromArgb(128, 64, 0) } });
+      RenderLsystem(c, lsys.Sentence, "Map", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'F', Color.FromArgb(128, 64, 0) } });
     }
 
     private static void BrokenWindow (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F-F-F-F", new Dictionary<char, string>{ { 'F', "FF-F--F-F" } });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Broken window", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'F', Color.FromArgb(0, 128, 255) } });
+      RenderLsystem(c, lsys.Sentence, "Broken window", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'F', Color.FromArgb(0, 128, 255) } });
     }
 
     private static void Dragon (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("L", new Dictionary<char, string>{ { 'L', "L+R+" }, {'R', "-L-R"} });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Dragon curve", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'L', Color.DarkOrchid }, { 'R', Color.FromArgb(255,219,148) } });
+      RenderLsystem(c, lsys.Sentence, "Dragon curve", gen, 90, new Point(0, 1), new Dictionary<char, Color> { { 'L', Color.DarkOrchid }, { 'R', Color.FromArgb(255,219,148) } });
     }
 
     private static void LevyCCurve (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F", new Dictionary<char, string>{ {'F', "+F--F+"} });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Lévy C curve", gen, 45, new Point(-1, 0), new Dictionary<char, Color>());
+      RenderLsystem(c, lsys.Sentence, "Lévy C curve", gen, 45, new Point(-1, 0), new Dictionary<char, Color>());
     }
 
     private static void Sierpinski (Canvas c, int gen)
     {
       Lsystem lsys = new Lsystem("F-G-G", new Dictionary<char, string>{ {'F', "F-G+F+G-F" }, {'G', "GG"} });
       lsys.NthGeneration(gen);
-      AdjustTurtle(c, lsys.Sentence, "Sierpinski triangle", gen, 120, new Point(-1, 0), new Dictionary<char, Color> { { 'F', Color.DarkRed }, {'G', Color.FromArgb(136,135,232)} });
+      RenderLsystem(c, lsys.Sentence, "Sierpinski triangle", gen, 120, new Point(-1, 0), new Dictionary<char, Color> { { 'F', Color.DarkRed }, {'G', Color.FromArgb(136,135,232)} });
     }
   }
 }
