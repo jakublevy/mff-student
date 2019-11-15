@@ -103,9 +103,7 @@ UINT {DIGIT}+
 	message(mlc::DUERR_UNEXPENDCMT, ctx->curline);
 }
 
-<INITIAL>{REAL}{IDENTIFIER} {
-	auto [m, _] = mlc::LexUtils::split_real_identifier(yytext, yyleng);
-	message(mlc::err_code::DUERR_BADREAL, ctx->curline, yytext);
+{REAL} {
 	double d;
 	try {
 		d = stod(yytext);
@@ -116,18 +114,9 @@ UINT {DIGIT}+
 	return parser::make_REAL(ctx->tab->ls_real().add(d), ctx->curline);
 }
 
-<INITIAL,array>{UINT}{IDENTIFIER} {
-	auto [m, _] = mlc::LexUtils::split_uint_identifier(yytext, yyleng);
-	message(mlc::err_code::DUERR_BADINT, ctx->curline, yytext);
-
-	auto [n, ok] = mlc::LexUtils::uint_parse(m);
-	if(!ok) 
-		message(mlc::err_code::DUERR_INTOUTRANGE, ctx->curline, yytext);
-
-	return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
-}
-
-{REAL} {
+<INITIAL>{REAL}{IDENTIFIER} {
+	auto [m, _] = mlc::LexUtils::split_real_identifier(yytext, yyleng);
+	message(mlc::err_code::DUERR_BADREAL, ctx->curline, yytext);
 	double d;
 	try {
 		d = stod(yytext);
@@ -145,6 +134,19 @@ UINT {DIGIT}+
 
 			    return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
 			}
+
+<INITIAL,array>{UINT}{IDENTIFIER} {
+	auto [m, _] = mlc::LexUtils::split_uint_identifier(yytext, yyleng);
+	message(mlc::err_code::DUERR_BADINT, ctx->curline, yytext);
+
+	auto [n, ok] = mlc::LexUtils::uint_parse(m);
+	if(!ok) 
+		message(mlc::err_code::DUERR_INTOUTRANGE, ctx->curline, yytext);
+
+	return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
+}
+
+
 
 <array>".." {
 	return parser::make_DOTDOT(ctx->curline);

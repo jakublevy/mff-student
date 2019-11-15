@@ -3400,21 +3400,21 @@ static const flex_int16_t yy_accept[176] =
     {   0,
         0,    0,    0,    0,    0,    0,    0,    0,   67,   65,
        63,   64,    4,   23,   24,   54,   59,   22,   58,   31,
-       57,   13,   21,   15,   51,   19,   49,   62,   62,   62,
+       57,   12,   21,   15,   51,   19,   49,   62,   62,   62,
        62,   62,   62,   62,   62,   62,   62,   62,   62,   62,
        62,   62,   62,   62,   62,   62,   42,    1,    9,    8,
-        8,    1,    2,    7,    6,    5,   66,   63,   66,   13,
-       43,   63,   12,   13,   11,   11,   20,   50,   52,   48,
+        8,    1,    2,    7,    6,    5,   66,   63,   66,   12,
+       43,   63,   10,   12,   13,   13,   20,   50,   52,   48,
        62,   62,   62,   62,   62,   62,   34,   62,   62,   62,
        62,   62,   25,   62,   62,   62,   46,   45,   62,   62,
-       62,   60,   62,   62,   62,   62,    3,   14,   13,   12,
+       62,   60,   62,   62,   62,   62,    3,   14,   12,   10,
 
-       10,   10,   11,    0,   11,   53,   62,   62,   62,   55,
+       11,   11,   13,    0,   10,   53,   62,   62,   62,   55,
        62,   62,   30,   35,   62,   62,   62,   56,   47,   62,
-       62,   62,   62,   62,   62,   38,   62,   10,    0,   10,
-       12,   10,   62,   62,   62,   62,   27,   62,   28,   62,
-       62,   62,   62,   62,   26,   18,   62,   62,   12,   10,
-       10,   32,   29,   33,   62,   62,   17,   62,   62,   62,
+       62,   62,   62,   62,   62,   38,   62,   11,    0,   10,
+       10,   11,   62,   62,   62,   62,   27,   62,   28,   62,
+       62,   62,   62,   62,   26,   18,   62,   62,   10,   11,
+       11,   32,   29,   33,   62,   62,   17,   62,   62,   62,
        62,   39,   37,   61,   62,   62,   62,   41,   40,   62,
        62,   16,   36,   62,   44
     } ;
@@ -3449,8 +3449,8 @@ static const yy_state_type yy_NUL_trans[176] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
-#line 2 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 1 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
+#line 2 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 	// this code is emitted into du12l.cpp 
 	// avoid macro redefinition warnings when compiling du1l.cpp
 	#pragma warning (disable:4005)
@@ -3741,11 +3741,11 @@ YY_DECL
 		}
 
 	{
-#line 39 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 39 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 
 
 
-#line 43 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 43 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 	typedef yy::mlaskal_parser parser;
 
 	using std::atoi;
@@ -3758,10 +3758,7 @@ YY_DECL
 	string text;
 
 
-	string malformed_uint;
-
-
-#line 3764 "du12l.cpp"
+#line 3761 "du12l.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -3808,7 +3805,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 58 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 55 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	++brackets_balance;
 	BEGIN(comment);
@@ -3816,7 +3813,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 63 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 60 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	--brackets_balance;
 	if(!brackets_balance) 
@@ -3824,7 +3821,7 @@ YY_RULE_SETUP
 }
 	YY_BREAK
 case YY_STATE_EOF(comment):
-#line 69 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 66 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	message(mlc::err_code::DUERR_EOFINCMT, ctx->curline);
 	return parser::make_EOF(ctx->curline);
@@ -3832,14 +3829,14 @@ case YY_STATE_EOF(comment):
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 74 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 71 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	text += "'";
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 78 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 75 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	BEGIN(str);
 	text = "";
@@ -3847,7 +3844,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 83 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 80 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	BEGIN(INITIAL);
 	return parser::make_STRING(ctx->tab->ls_str().add(text), ctx->curline);
@@ -3856,7 +3853,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 88 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 85 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	message(mlc::err_code::DUERR_EOLINSTRCHR, ctx->curline);	
 	BEGIN(INITIAL);
@@ -3865,7 +3862,7 @@ YY_RULE_SETUP
 }
 	YY_BREAK
 case YY_STATE_EOF(str):
-#line 95 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 92 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	message(mlc::err_code::DUERR_EOFINSTRCHR, ctx->curline);
 	return parser::make_EOF(ctx->curline);
@@ -3873,26 +3870,40 @@ case YY_STATE_EOF(str):
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 100 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 97 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	text += yytext;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 104 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 101 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 106 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 103 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	message(mlc::DUERR_UNEXPENDCMT, ctx->curline);
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 110 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 106 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
+{
+	double d;
+	try {
+		d = stod(yytext);
+	}
+	catch(out_of_range const &) {
+		message(mlc::err_code::DUERR_REALOUTRANGE, ctx->curline, yytext);
+	}
+	return parser::make_REAL(ctx->tab->ls_real().add(d), ctx->curline);
+}
+	YY_BREAK
+case 11:
+YY_RULE_SETUP
+#line 117 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	auto [m, _] = mlc::LexUtils::split_real_identifier(yytext, yyleng);
 	message(mlc::err_code::DUERR_BADREAL, ctx->curline, yytext);
@@ -3906,9 +3917,20 @@ YY_RULE_SETUP
 	return parser::make_REAL(ctx->tab->ls_real().add(d), ctx->curline);
 }
 	YY_BREAK
-case 11:
+case 12:
 YY_RULE_SETUP
-#line 123 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 130 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
+{
+			    auto [n, ok] = mlc::LexUtils::uint_parse(yytext);
+				if(!ok) 
+					message(mlc::err_code::DUERR_INTOUTRANGE, ctx->curline, yytext);
+
+			    return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
+			}
+	YY_BREAK
+case 13:
+YY_RULE_SETUP
+#line 139 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	auto [m, _] = mlc::LexUtils::split_uint_identifier(yytext, yyleng);
 	message(mlc::err_code::DUERR_BADINT, ctx->curline, yytext);
@@ -3920,230 +3942,205 @@ YY_RULE_SETUP
 	return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
 }
 	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 134 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
-{
-	double d;
-	try {
-		d = stod(yytext);
-	}
-	catch(out_of_range const &) {
-		message(mlc::err_code::DUERR_REALOUTRANGE, ctx->curline, yytext);
-	}
-	return parser::make_REAL(ctx->tab->ls_real().add(d), ctx->curline);
-}
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 145 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
-{
-			    auto [n, ok] = mlc::LexUtils::uint_parse(yytext);
-				if(!ok) 
-					message(mlc::err_code::DUERR_INTOUTRANGE, ctx->curline, yytext);
-
-			    return parser::make_UINT(ctx->tab->ls_int().add(n), ctx->curline);
-			}
-	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 153 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 151 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_DOTDOT(ctx->curline);
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 157 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 155 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 		return parser::make_SEMICOLON(ctx->curline);
 	}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 161 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 159 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {	
 				return parser::make_PROGRAM(ctx->curline);
 			}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 165 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 163 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 		return parser::make_LABEL(ctx->curline);
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 169 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 167 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_TYPE(ctx->curline);
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 173 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 171 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_EQ(ctx->curline);
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 177 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 175 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_ASSIGN(ctx->curline);
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 181 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 179 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_COLON(ctx->curline);
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 185 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 183 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_COMMA(ctx->curline);
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 189 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 187 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_LPAR(ctx->curline);
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 193 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 191 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_RPAR(ctx->curline);
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 197 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 195 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_IF(ctx->curline);
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 201 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 199 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_THEN(ctx->curline);
 }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 205 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 203 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_ELSE(ctx->curline);
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 209 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 207 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_GOTO(ctx->curline);
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 213 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 211 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_BEGIN(ctx->curline);
 }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 217 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 215 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_END(ctx->curline);
 }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 221 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 219 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_DOT(ctx->curline);
 }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 225 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 223 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_ARRAY(ctx->curline);
 }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 229 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 227 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_CONST(ctx->curline);
 }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 233 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 231 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_DO(ctx->curline);
 }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 237 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 235 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_FOR(ctx->curline);
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 241 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 239 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_FUNCTION(ctx->curline);
 }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 245 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 243 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_WHILE(ctx->curline);
 }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 249 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 247 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_VAR(ctx->curline);
 }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 253 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 251 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_UNTIL(ctx->curline);
 }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 257 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 255 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_REPEAT(ctx->curline);
 }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 261 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 259 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_RECORD(ctx->curline);
 }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 265 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 263 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	BEGIN(array);
 	return parser::make_LSBRA(ctx->curline);
@@ -4151,7 +4148,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 270 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 268 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	BEGIN(INITIAL);
 	return parser::make_RSBRA(ctx->curline);
@@ -4159,133 +4156,133 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 275 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 273 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_PROCEDURE(ctx->curline);
 }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 279 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 277 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OR(ctx->curline);
 }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 283 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 281 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OF(ctx->curline);
 }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 287 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 285 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_NOT(ctx->curline);
 }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 291 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 289 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_REL(mlc::DUTOKGE_OPER_REL::DUTOKGE_GE, ctx->curline);
 	}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 294 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 292 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_REL(mlc::DUTOKGE_OPER_REL::DUTOKGE_GT, ctx->curline);
 }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 297 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 295 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_REL(mlc::DUTOKGE_OPER_REL::DUTOKGE_LE, ctx->curline);
 }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 301 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 299 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_REL(mlc::DUTOKGE_OPER_REL::DUTOKGE_LT, ctx->curline);
 	}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 304 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 302 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_REL(mlc::DUTOKGE_OPER_REL::DUTOKGE_NE, ctx->curline);
 }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 308 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 306 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_MUL(mlc::DUTOKGE_OPER_MUL::DUTOKGE_AND, ctx->curline);
 }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 311 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 309 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_MUL(mlc::DUTOKGE_OPER_MUL::DUTOKGE_ASTERISK, ctx->curline);
 }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 315 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 313 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_MUL(mlc::DUTOKGE_OPER_MUL::DUTOKGE_DIV, ctx->curline);
 }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 319 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 317 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_MUL(mlc::DUTOKGE_OPER_MUL::DUTOKGE_MOD, ctx->curline);
 }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 323 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 321 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_MUL(mlc::DUTOKGE_OPER_MUL::DUTOKGE_SOLIDUS, ctx->curline);
 }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 327 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 325 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_SIGNADD(mlc::DUTOKGE_OPER_SIGNADD::DUTOKGE_MINUS, ctx->curline);
 }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 331 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 329 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_OPER_SIGNADD(mlc::DUTOKGE_OPER_SIGNADD::DUTOKGE_PLUS, ctx->curline);
 }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 335 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 333 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_FOR_DIRECTION(mlc::DUTOKGE_FOR_DIRECTION::DUTOKGE_TO, ctx->curline);
 }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 339 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 337 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	return parser::make_FOR_DIRECTION(mlc::DUTOKGE_FOR_DIRECTION::DUTOKGE_DOWNTO, ctx->curline);
 }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 343 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 341 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 		       string id_upC = mlc::LexUtils::toUpperCase(yytext);
 			   return parser::make_IDENTIFIER(ctx->tab->ls_id().add(id_upC), ctx->curline);
@@ -4293,33 +4290,33 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 348 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 346 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 /* go out with whitespaces */
 	YY_BREAK
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 350 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 348 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 {
 	++ctx->curline;
 }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 354 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 352 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 message(mlc::DUERR_UNKCHAR, ctx->curline, *yytext, *yytext);
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(array):
-#line 356 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 354 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 return parser::make_EOF(ctx->curline);
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 358 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 356 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 ECHO;
 	YY_BREAK
-#line 4322 "du12l.cpp"
+#line 4319 "du12l.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -5484,7 +5481,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 358 "C:\\Users\\jakub\\Desktop\\mlaskal\\framework\\private-src\\du12l.lex"
+#line 356 "C:\\Users\\jakub\\Desktop\\mff-stuff\\Compilers\\framework\\private-src\\du12l.lex"
 
 
 namespace mlc {

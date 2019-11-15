@@ -1,4 +1,4 @@
-// A Bison parser, made by GNU Bison 3.4.2.
+// A Bison parser, made by GNU Bison 3.3.2.
 
 // Skeleton implementation for Bison LALR(1) parsers in C++
 
@@ -41,26 +41,28 @@
 
 
 // Unqualified %code blocks.
-#line 37 "du3456g.y"
+#line 40 "du3456g.y" // lalr1.cc:435
 
-	// this code is emitted to du3456g.cpp
+    #include "du3456sem.hpp"
 
-	// declare yylex here 
-	#include "bisonflex.hpp"
-	YY_DECL;
+    // this code is emitted to du3456g.cpp
 
-	// allow access to context 
-	#include "dutables.hpp"
+    // declare yylex here 
+    #include "bisonflex.hpp"
+    YY_DECL;
 
-	// other user-required contents
-	#include <assert.h>
-	#include <stdlib.h>
+    // allow access to context 
+    #include "dutables.hpp"
+
+    // other user-required contents
+    #include <assert.h>
+    #include <stdlib.h>
 
     /* local stuff */
     using namespace mlc;
 
 
-#line 64 "du3456g.tab.cc"
+#line 66 "du3456g.tab.cc" // lalr1.cc:435
 
 
 #ifndef YY_
@@ -104,6 +106,9 @@
     while (false)
 # endif
 
+
+// Suppress unused-variable warnings by "using" E.
+#define YYUSE(E) ((void) (E))
 
 // Enable debugging if requested.
 #if YYDEBUG
@@ -150,9 +155,9 @@
 #define YYERROR         goto yyerrorlab
 #define YYRECOVERING()  (!!yyerrstatus_)
 
-namespace yy {
-#line 155 "du3456g.tab.cc"
 
+namespace yy {
+#line 161 "du3456g.tab.cc" // lalr1.cc:510
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -261,6 +266,34 @@ namespace yy {
   {
     switch (that.type_get ())
     {
+      case 89: // type
+        value.YY_MOVE_OR_COPY< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.YY_MOVE_OR_COPY< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.YY_MOVE_OR_COPY<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 94: // var_string_opt
+        value.YY_MOVE_OR_COPY< bool > (YY_MOVE (that.value));
+        break;
+
       case 44: // FOR_DIRECTION
         value.YY_MOVE_OR_COPY< mlc::DUTOKGE_FOR_DIRECTION > (YY_MOVE (that.value));
         break;
@@ -293,6 +326,28 @@ namespace yy {
         value.YY_MOVE_OR_COPY< mlc::ls_str_index > (YY_MOVE (that.value));
         break;
 
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.YY_MOVE_OR_COPY< std::deque<mlc::ls_id_index> > (YY_MOVE (that.value));
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.YY_MOVE_OR_COPY< std::deque<mlc::ls_int_index> > (YY_MOVE (that.value));
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.YY_MOVE_OR_COPY< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (YY_MOVE (that.value));
+        break;
+
       default:
         break;
     }
@@ -308,6 +363,34 @@ namespace yy {
   {
     switch (that.type_get ())
     {
+      case 89: // type
+        value.move< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.move< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.move<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 94: // var_string_opt
+        value.move< bool > (YY_MOVE (that.value));
+        break;
+
       case 44: // FOR_DIRECTION
         value.move< mlc::DUTOKGE_FOR_DIRECTION > (YY_MOVE (that.value));
         break;
@@ -340,6 +423,28 @@ namespace yy {
         value.move< mlc::ls_str_index > (YY_MOVE (that.value));
         break;
 
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.move< std::deque<mlc::ls_id_index> > (YY_MOVE (that.value));
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.move< std::deque<mlc::ls_int_index> > (YY_MOVE (that.value));
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.move< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (YY_MOVE (that.value));
+        break;
+
       default:
         break;
     }
@@ -355,6 +460,34 @@ namespace yy {
     state = that.state;
     switch (that.type_get ())
     {
+      case 89: // type
+        value.move< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (that.value);
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.move< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (that.value);
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.move<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (that.value);
+        break;
+
+      case 94: // var_string_opt
+        value.move< bool > (that.value);
+        break;
+
       case 44: // FOR_DIRECTION
         value.move< mlc::DUTOKGE_FOR_DIRECTION > (that.value);
         break;
@@ -385,6 +518,28 @@ namespace yy {
 
       case 29: // STRING
         value.move< mlc::ls_str_index > (that.value);
+        break;
+
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.move< std::deque<mlc::ls_id_index> > (that.value);
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.move< std::deque<mlc::ls_int_index> > (that.value);
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.move< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (that.value);
         break;
 
       default:
@@ -636,6 +791,34 @@ namespace yy {
          when using variants.  */
       switch (yyr1_[yyn])
     {
+      case 89: // type
+        yylhs.value.emplace< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > ();
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        yylhs.value.emplace< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ();
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        yylhs.value.emplace<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ();
+        break;
+
+      case 94: // var_string_opt
+        yylhs.value.emplace< bool > ();
+        break;
+
       case 44: // FOR_DIRECTION
         yylhs.value.emplace< mlc::DUTOKGE_FOR_DIRECTION > ();
         break;
@@ -668,6 +851,28 @@ namespace yy {
         yylhs.value.emplace< mlc::ls_str_index > ();
         break;
 
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        yylhs.value.emplace< std::deque<mlc::ls_id_index> > ();
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        yylhs.value.emplace< std::deque<mlc::ls_int_index> > ();
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        yylhs.value.emplace< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > ();
+        break;
+
       default:
         break;
     }
@@ -688,9 +893,378 @@ namespace yy {
         {
           switch (yyn)
             {
+  case 8:
+#line 146 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewLabels(ctx, yystack_[1].value.as < std::deque<mlc::ls_int_index> > ()); }
+#line 900 "du3456g.tab.cc" // lalr1.cc:919
+    break;
 
-#line 693 "du3456g.tab.cc"
+  case 11:
+#line 152 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewNamedConstant(ctx, yystack_[3].value.as < mlc::ls_id_index > (), yystack_[1].value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > ()); }
+#line 913 "du3456g.tab.cc" // lalr1.cc:919
+    break;
 
+  case 12:
+#line 153 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewNamedConstant(ctx, yystack_[3].value.as < mlc::ls_id_index > (), yystack_[1].value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > ()); }
+#line 926 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 15:
+#line 160 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewType(ctx, yystack_[3].value.as < mlc::ls_id_index > (), yystack_[1].value.as < 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > ()); }
+#line 936 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 16:
+#line 161 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewType(ctx, yystack_[3].value.as < mlc::ls_id_index > (), yystack_[1].value.as < 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > ()); }
+#line 946 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 19:
+#line 168 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewVariables(ctx, yystack_[3].value.as < std::deque<mlc::ls_id_index> > (), yystack_[1].value.as < mlc::ls_id_index > ()); }
+#line 952 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 20:
+#line 169 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewVariables(ctx, yystack_[3].value.as < std::deque<mlc::ls_id_index> > (), yystack_[1].value.as < mlc::ls_id_index > ()); }
+#line 958 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 24:
+#line 176 "du3456g.y" // lalr1.cc:919
+    { ctx->tab->leave(ctx->curline); }
+#line 964 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 25:
+#line 181 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::deque<mlc::ls_int_index> > () = yystack_[0].value.as < std::deque<mlc::ls_int_index> > (); yylhs.value.as < std::deque<mlc::ls_int_index> > ().insert(yylhs.value.as < std::deque<mlc::ls_int_index> > ().begin(), yystack_[1].value.as < mlc::ls_int_index > ()); }
+#line 970 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 26:
+#line 185 "du3456g.y" // lalr1.cc:919
+    { /* generates an empty ls_int_index deque */ }
+#line 976 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 27:
+#line 186 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::deque<mlc::ls_int_index> > () = yystack_[0].value.as < std::deque<mlc::ls_int_index> > (); yylhs.value.as < std::deque<mlc::ls_int_index> > ().insert(yylhs.value.as < std::deque<mlc::ls_int_index> > ().begin(), yystack_[1].value.as < mlc::ls_int_index > ()); }
+#line 982 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 28:
+#line 197 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = yystack_[0].value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (); }
+#line 1002 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 29:
+#line 198 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = std::make_tuple(yystack_[1].value.as < mlc::DUTOKGE_OPER_SIGNADD > (), yystack_[0].value.as < mlc::ls_int_index > ()); }
+#line 1015 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 30:
+#line 199 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = std::make_tuple(yystack_[1].value.as < mlc::DUTOKGE_OPER_SIGNADD > (), yystack_[0].value.as < mlc::ls_real_index > ()); }
+#line 1028 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 31:
+#line 211 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = yystack_[0].value.as < mlc::ls_int_index > (); }
+#line 1041 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 32:
+#line 212 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = yystack_[0].value.as < mlc::ls_real_index > (); }
+#line 1054 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 33:
+#line 213 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = yystack_[0].value.as < mlc::ls_str_index > (); }
+#line 1067 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 34:
+#line 214 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > () = SemUtils::checkBoolean(ctx, yystack_[0].value.as < mlc::ls_id_index > ()); }
+#line 1080 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 84:
+#line 324 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::deque<mlc::ls_id_index> > () = yystack_[0].value.as < std::deque<mlc::ls_id_index> > (); yylhs.value.as < std::deque<mlc::ls_id_index> > ().insert(yylhs.value.as < std::deque<mlc::ls_id_index> > ().begin(), yystack_[1].value.as < mlc::ls_id_index > ()); }
+#line 1086 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 85:
+#line 327 "du3456g.y" // lalr1.cc:919
+    { /* create an empty ls_id_index deque */ }
+#line 1092 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 86:
+#line 330 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < std::deque<mlc::ls_id_index> > () = yystack_[0].value.as < std::deque<mlc::ls_id_index> > (); yylhs.value.as < std::deque<mlc::ls_id_index> > ().insert(yylhs.value.as < std::deque<mlc::ls_id_index> > ().begin(), yystack_[1].value.as < mlc::ls_id_index > ()); }
+#line 1098 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 87:
+#line 338 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = yystack_[4].value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ().push_back(std::make_tuple(yystack_[2].value.as < std::deque<mlc::ls_id_index> > (), yystack_[0].value.as < mlc::ls_id_index > ())); }
+#line 1113 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 88:
+#line 339 "du3456g.y" // lalr1.cc:919
+    { 
+               yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > > {};
+               yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ().push_back(std::make_tuple(yystack_[2].value.as < std::deque<mlc::ls_id_index> > (), yystack_[0].value.as < mlc::ls_id_index > ()));
+           }
+#line 1128 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 89:
+#line 349 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = yystack_[2].value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); }
+#line 1140 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 90:
+#line 350 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = yystack_[1].value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); }
+#line 1152 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 91:
+#line 351 "du3456g.y" // lalr1.cc:919
+    { /* create an empty vector */  }
+#line 1158 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 92:
+#line 360 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > () = yystack_[0].value.as < mlc::ls_id_index > (); }
+#line 1168 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 93:
+#line 361 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > () = yystack_[0].value.as < 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); }
+#line 1181 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 94:
+#line 364 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewProcedure(ctx, yystack_[2].value.as < mlc::ls_id_index > (), yystack_[1].value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ()); }
+#line 1190 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 95:
+#line 367 "du3456g.y" // lalr1.cc:919
+    { SemUtils::addNewFunction(ctx, yystack_[4].value.as < mlc::ls_id_index > (), yystack_[3].value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (), yystack_[1].value.as < mlc::ls_id_index > ()); }
+#line 1199 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 96:
+#line 374 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > > {}; }
+#line 1208 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 97:
+#line 375 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = yystack_[1].value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); }
+#line 1220 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 98:
+#line 382 "du3456g.y" // lalr1.cc:919
+    {
+                         yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = yystack_[5].value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (); yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ().push_back(std::make_tuple(yystack_[3].value.as < bool > (), yystack_[2].value.as < std::deque<mlc::ls_id_index> > (), yystack_[0].value.as < mlc::ls_id_index > ()));
+                   }
+#line 1237 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 99:
+#line 385 "du3456g.y" // lalr1.cc:919
+    {
+                        yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > () = std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > > {};
+                        yylhs.value.as <  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ().push_back(std::make_tuple(yystack_[3].value.as < bool > (), yystack_[2].value.as < std::deque<mlc::ls_id_index> > (), yystack_[0].value.as < mlc::ls_id_index > ()));
+                 }
+#line 1252 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 100:
+#line 392 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < bool > () = true; }
+#line 1258 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+  case 101:
+#line 393 "du3456g.y" // lalr1.cc:919
+    { yylhs.value.as < bool > () = false; }
+#line 1264 "du3456g.tab.cc" // lalr1.cc:919
+    break;
+
+
+#line 1268 "du3456g.tab.cc" // lalr1.cc:919
             default:
               break;
             }
@@ -960,197 +1534,188 @@ namespace yy {
   }
 
 
-  const signed char  mlaskal_parser ::yypact_ninf_ = -119;
+  const signed char  mlaskal_parser ::yypact_ninf_ = -104;
 
   const signed char  mlaskal_parser ::yytable_ninf_ = -1;
 
-  const short
+  const signed char
    mlaskal_parser ::yypact_[] =
   {
-      23,    28,    14,    34,  -119,    66,    45,    51,    42,    69,
-      46,    47,    49,    55,    76,  -119,    66,    66,  -119,    65,
-      86,    67,  -119,  -119,    58,    58,     9,  -119,    76,    70,
-      71,    62,  -119,    73,    89,    46,    90,    72,    74,     9,
-      78,    61,    61,     9,    80,   -15,    75,   -12,    77,   103,
-    -119,  -119,  -119,    51,    51,    13,    81,  -119,    87,  -119,
-    -119,  -119,    17,    87,  -119,    91,   106,  -119,  -119,    22,
-     100,  -119,    11,    99,    98,    82,    94,    61,    61,  -119,
-      95,    97,    61,     9,  -119,  -119,  -119,    66,    66,  -119,
-    -119,  -119,  -119,    39,    96,  -119,    43,    92,  -119,   101,
-      90,  -119,   102,   104,  -119,    22,    25,    61,  -119,    -5,
-      88,   107,     9,  -119,  -119,    61,  -119,     9,    61,    61,
-    -119,    93,   105,  -119,    -1,  -119,  -119,  -119,  -119,   109,
-     110,  -119,  -119,   111,     6,  -119,  -119,   112,   117,  -119,
-      43,    87,   118,  -119,  -119,  -119,   113,  -119,  -119,    22,
-    -119,    22,  -119,   115,  -119,  -119,  -119,    85,  -119,    61,
-    -119,  -119,    51,    51,   114,  -119,  -119,   116,     4,   119,
-      92,   121,   120,  -119,  -119,    -5,    88,     9,    61,    93,
-    -119,  -119,    13,    43,  -119,    12,   122,  -119,  -119,    87,
-     126,  -119,  -119,  -119,   127,  -119,   123,  -119,  -119,   124,
-      43,  -119,   125,  -119,     9,   111,    43,   130,    43,  -119,
-    -119,  -119,   119,   131,  -119,    87,  -119
+       8,    18,    55,    33,  -104,    64,    42,  -104,    39,    67,
+      43,    44,    54,  -104,    47,    70,    50,  -104,  -104,     2,
+      52,    53,  -104,    64,    64,    48,    56,    57,    73,    43,
+       2,    58,    46,    46,     2,    60,   -17,    62,    12,    68,
+      81,  -104,  -104,    59,    59,    89,    69,    69,    11,    71,
+      72,    74,    75,  -104,  -104,    93,  -104,  -104,    21,    87,
+    -104,   -20,    88,    85,    76,    82,    46,    46,  -104,    84,
+      86,    46,     2,  -104,  -104,   104,    83,    80,  -104,  -104,
+    -104,  -104,  -104,  -104,  -104,  -104,    -2,    90,  -104,    11,
+      41,    91,    94,    75,    95,  -104,    21,    23,  -104,  -104,
+    -104,    46,   -11,    78,    92,     2,  -104,  -104,    46,  -104,
+       2,    46,    46,  -104,    96,    79,  -104,    20,  -104,  -104,
+    -104,  -104,  -104,    -3,    75,  -104,    99,  -104,  -104,  -104,
+      97,     6,  -104,  -104,   100,    41,   105,  -104,    98,   107,
+    -104,  -104,   101,  -104,  -104,    21,  -104,    21,  -104,   102,
+    -104,  -104,  -104,   103,  -104,    46,  -104,  -104,   104,  -104,
+     106,   108,  -104,  -104,   109,     0,  -104,   111,    94,   110,
+     112,  -104,   -11,    78,     2,    46,    96,    75,   113,  -104,
+     118,  -104,    10,  -104,  -104,   115,  -104,  -104,  -104,  -104,
+     116,  -104,   114,  -104,  -104,  -104,   117,  -104,     2,   120,
+     123,  -104,  -104,  -104
   };
 
   const unsigned char
    mlaskal_parser ::yydefact_[] =
   {
-       0,     0,     0,     0,     1,     7,     0,    24,     0,     9,
-      32,     0,     0,     0,     0,    25,     7,     7,     2,     0,
-      14,     0,    31,     8,    99,    99,    79,     5,     0,     0,
-       0,     0,    10,     0,    19,    32,   103,     0,     0,    79,
-       0,    40,    40,    79,     0,    62,     0,     0,    83,     0,
-      80,    70,     6,    28,    28,     0,     0,    15,     0,     3,
-      33,   104,     0,     0,    97,     0,     0,    72,    41,     0,
-       0,    42,    47,     0,     0,     0,     0,    40,    40,    71,
-       0,     0,    40,    84,    82,     4,    26,     7,     7,    27,
-      37,    38,    39,     0,     0,    34,     0,    88,    20,     0,
-     103,   100,     0,     0,    73,     0,    62,    40,    57,    52,
-      55,    58,     0,    44,    45,    40,    46,     0,    40,    40,
-      68,    65,     0,    86,     0,    69,    67,    85,    81,     0,
-       0,    35,    36,    12,     0,    95,    96,     0,     0,    87,
-       0,     0,     0,    98,    61,    59,     0,    51,    50,     0,
-      49,     0,    54,    75,    48,    76,    77,     0,    43,    40,
-      64,    63,    28,    28,     0,    11,    94,     0,     0,    17,
-      88,     0,     0,   102,    60,    52,    55,     0,    40,    65,
-      29,    30,     0,     0,    93,     0,     0,    16,    89,    22,
-       0,    53,    56,    74,     0,    66,     0,    91,    92,     0,
-       0,    21,     0,   101,     0,    12,     0,     0,     0,    78,
-      13,    90,    17,     0,    18,    22,    23
+       0,     0,     0,     0,     1,     7,     0,    21,     0,     9,
+      26,     0,     0,     2,     0,    13,     0,    25,     8,    76,
+       0,     0,     5,     7,     7,     0,    10,     0,    17,    26,
+      76,     0,    35,    35,    76,     0,    59,     0,     0,    80,
+       0,    77,    67,    96,    96,     0,     0,     0,     0,     0,
+       0,    14,     0,     3,    27,     0,    69,    36,     0,     0,
+      37,    42,     0,     0,     0,     0,    35,    35,    68,     0,
+       0,    35,    81,    79,     4,   100,     0,     0,     6,    24,
+      22,    23,    34,    31,    32,    33,     0,     0,    28,     0,
+       0,     0,    85,    18,     0,    70,     0,    59,    56,    57,
+      58,    35,    47,    50,    52,     0,    39,    40,    35,    41,
+       0,    35,    35,    65,    62,     0,    83,     0,    66,    64,
+      82,    78,   101,     0,     0,    94,     0,    29,    30,    12,
+       0,     0,    92,    93,     0,     0,     0,    84,     0,     0,
+      55,    53,     0,    46,    45,     0,    44,     0,    49,    72,
+      43,    73,    74,     0,    38,    35,    61,    60,   100,    97,
+       0,     0,    11,    91,     0,     0,    16,     0,    85,     0,
+       0,    54,    47,    50,     0,    35,    62,     0,     0,    95,
+       0,    90,     0,    15,    86,     0,    20,    48,    51,    71,
+       0,    63,     0,    99,    88,    89,     0,    19,     0,     0,
+       0,    75,    98,    87
   };
 
   const short
    mlaskal_parser ::yypgoto_[] =
   {
-    -119,  -119,   128,   129,  -119,    -8,  -119,  -119,  -119,   -75,
-    -119,  -119,   -64,  -119,  -119,   -59,  -119,  -119,   -52,  -119,
-     132,   -20,   -54,  -119,   -32,   -14,  -119,   -74,  -119,    48,
-    -119,   -10,    19,    -7,   -93,    60,  -119,    -9,   -62,  -106,
-      20,   108,  -119,   133,   -58,     1,  -119,  -119,  -118,   165,
-     166,   149,  -119,    79
+    -104,  -104,   129,    77,  -104,   126,  -104,  -104,  -104,  -104,
+    -104,  -104,  -104,  -104,   119,  -104,   124,    28,  -104,  -104,
+     -27,   -57,  -104,   -66,  -104,    49,  -104,   -18,     7,   -15,
+     -88,    63,  -104,   -21,   -54,  -103,    27,   121,  -104,   122,
+     -90,   -12,  -104,  -104,    24,  -104,  -104,   125,  -104,     3
   };
 
   const short
    mlaskal_parser ::yydefgoto_[] =
   {
-      -1,     2,    28,    27,     8,    29,     9,    20,    32,   165,
-      34,    57,   187,    59,    98,   201,    14,    15,    86,    11,
-      22,    94,   108,    69,    70,   157,   115,    71,   116,    72,
-     149,   150,   109,   152,   110,    79,   122,   160,    47,    48,
-      49,    50,    84,    51,   202,   139,   168,   136,   137,    87,
-      88,    37,    62,    63
+      -1,     2,    45,    22,     8,    46,     9,    15,    26,    28,
+      51,    53,    93,    12,    80,    11,    17,    87,    88,    58,
+      59,   153,   108,    60,   109,    61,   145,   146,   102,   148,
+     103,    68,   115,   156,    38,    39,    40,    41,    73,    42,
+      94,   137,   165,   133,   134,    23,    24,    76,   123,   124
   };
 
   const unsigned char
    mlaskal_parser ::yytable_[] =
   {
-      99,    95,    89,   121,   123,   102,   153,   111,   127,    30,
-      73,   155,   144,   184,     4,   166,    76,    39,   147,    81,
-      77,   198,   171,    40,    41,    78,     1,    42,    82,    43,
-      76,    44,    97,   146,   185,    45,    46,   148,    97,    78,
-      90,    91,    92,   111,   113,   158,   105,   100,   106,    90,
-      91,    92,   114,   101,     3,    93,    76,   107,   176,    66,
-      77,    12,    13,    74,     5,   197,   131,   132,   134,   135,
-       6,   193,    10,    18,    19,    24,   167,    23,    21,   129,
-     130,    25,   207,   172,    26,   179,   156,   111,   211,   111,
-     213,    31,    33,    36,    35,    55,    58,    61,   209,    56,
-      53,    54,    64,    68,   158,    67,    75,    83,    65,    80,
-     180,   181,    85,    97,    96,   104,   112,   103,   117,   118,
-     120,   124,   119,   126,   138,   159,   133,   199,    95,   178,
-     210,   151,   177,     7,   143,   140,   142,   164,    81,   162,
-     163,   161,   169,   170,   173,   186,   204,   182,   214,   174,
-     183,   189,   203,   205,   190,   200,   216,    52,   206,   208,
-     212,   215,   196,   154,   194,   191,   145,    60,   175,   192,
-     195,   188,    16,    17,    38,     0,     0,     0,     0,   141,
+     114,   116,   149,   138,   104,   120,    62,   151,   140,   181,
+      30,     1,   143,   106,    65,   163,    31,    32,    66,   195,
+      33,   107,    34,    67,    35,   127,   128,   158,    36,    37,
+     182,   144,    92,   159,   160,   142,    92,    82,    83,    84,
+      85,   164,   104,    70,     3,    96,   154,    97,    98,    99,
+     100,    65,    71,    86,    65,     4,   101,    55,    66,   173,
+      67,    63,    19,     5,    20,    21,   131,   132,     6,    10,
+      13,   189,    14,    25,    18,    16,    27,    29,    43,    44,
+      52,    48,    49,    50,   152,    56,    64,   192,    57,   176,
+      74,   104,   196,   104,    75,   201,    69,    19,    72,    79,
+      91,    92,    95,   105,    89,    90,   111,   110,   113,   154,
+     117,   122,   119,   125,   126,   157,   112,   130,   190,   174,
+     129,   147,    78,    70,   135,   161,   136,   162,   155,   139,
+     166,   168,   169,   170,     7,   198,   185,   171,   179,   193,
+     178,   183,   186,   180,   194,   197,   202,   175,   199,   203,
+      47,   200,   172,    54,   187,   191,   184,   150,   188,   167,
+     141,   177,     0,     0,     0,     0,    81,     0,     0,    77,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,   128,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,   125
+       0,   118,     0,   121
   };
 
   const short
    mlaskal_parser ::yycheck_[] =
   {
-      58,    55,    54,    77,    78,    63,   112,    69,    82,    17,
-      42,   117,   105,     9,     0,     9,    31,     8,    23,    31,
-      35,     9,   140,    14,    15,    40,     3,    18,    40,    20,
-      31,    22,    26,   107,    30,    26,    27,    42,    26,    40,
-      27,    28,    29,   105,    33,   119,    24,    30,    26,    27,
-      28,    29,    41,    36,    26,    42,    31,    35,   151,    39,
-      35,    10,    11,    43,    30,   183,    27,    28,    25,    26,
-       4,   177,    27,    31,     5,    26,   134,    30,    32,    87,
-      88,    26,   200,   141,     8,   159,   118,   149,   206,   151,
-     208,    26,     6,    35,    27,    33,     7,     7,   204,    26,
-      30,    30,    30,    42,   178,    27,    26,    30,    34,    34,
-     162,   163,     9,    26,    33,     9,    16,    26,    19,    21,
-      26,    26,    40,    26,    32,    32,    30,   185,   182,    44,
-     205,    43,    17,     5,    30,    34,    34,    26,    31,    30,
-      30,    36,    30,    26,    26,    26,    19,    33,   212,    36,
-      34,    30,    26,    30,    34,    33,   215,    28,    34,    34,
-      30,    30,   182,   115,   178,   175,   106,    35,   149,   176,
-     179,   170,     7,     7,    25,    -1,    -1,    -1,    -1,   100,
+      66,    67,   105,    93,    58,    71,    33,   110,    96,     9,
+       8,     3,    23,    33,    31,     9,    14,    15,    35,     9,
+      18,    41,    20,    40,    22,    27,    28,    30,    26,    27,
+      30,    42,    26,    36,   124,   101,    26,    26,    27,    28,
+      29,   131,    96,    31,    26,    24,   112,    26,    27,    28,
+      29,    31,    40,    42,    31,     0,    35,    30,    35,   147,
+      40,    34,     8,    30,    10,    11,    25,    26,     4,    27,
+      31,   174,     5,    26,    30,    32,     6,    27,    26,    26,
+       7,    33,    26,    26,   111,    27,    26,   177,    42,   155,
+       9,   145,   182,   147,    35,   198,    34,     8,    30,    30,
+      26,    26,     9,    16,    33,    33,    21,    19,    26,   175,
+      26,     7,    26,    30,    34,    36,    40,    89,   175,    17,
+      30,    43,    45,    31,    33,    26,    32,    30,    32,    34,
+      30,    26,    34,    26,     5,    19,    26,    36,    30,    26,
+      34,    30,    30,    34,    26,    30,    26,    44,    34,    26,
+      24,    34,   145,    29,   172,   176,   168,   108,   173,   135,
+      97,   158,    -1,    -1,    -1,    -1,    47,    -1,    -1,    44,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    83,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    80
+      -1,    69,    -1,    72
   };
 
   const unsigned char
    mlaskal_parser ::yystos_[] =
   {
        0,     3,    46,    26,     0,    30,     4,    47,    49,    51,
-      27,    64,    10,    11,    61,    62,    94,    95,    31,     5,
-      52,    32,    65,    30,    26,    26,     8,    48,    47,    50,
-      50,    26,    53,     6,    55,    27,    35,    96,    96,     8,
-      14,    15,    18,    20,    22,    26,    27,    83,    84,    85,
-      86,    88,    48,    30,    30,    33,    26,    56,     7,    58,
-      65,     7,    97,    98,    30,    34,    85,    27,    42,    68,
-      69,    72,    74,    69,    85,    26,    31,    35,    40,    80,
-      34,    31,    40,    30,    87,     9,    63,    94,    95,    63,
-      27,    28,    29,    42,    66,    67,    33,    26,    59,    89,
-      30,    36,    89,    26,     9,    24,    26,    35,    67,    77,
-      79,    83,    16,    33,    41,    71,    73,    19,    21,    40,
-      26,    72,    81,    72,    26,    88,    26,    72,    86,    50,
-      50,    27,    28,    30,    25,    26,    92,    93,    32,    90,
-      34,    98,    34,    30,    79,    80,    72,    23,    42,    75,
-      76,    43,    78,    84,    74,    84,    69,    70,    72,    32,
-      82,    36,    30,    30,    26,    54,     9,    89,    91,    30,
-      26,    93,    89,    26,    36,    77,    79,    17,    44,    72,
-      63,    63,    33,    34,     9,    30,    26,    57,    90,    30,
-      34,    76,    78,    84,    70,    82,    66,    93,     9,    89,
-      33,    60,    89,    26,    19,    30,    34,    93,    34,    84,
-      54,    93,    30,    93,    57,    30,    60
+      27,    60,    58,    31,     5,    52,    32,    61,    30,     8,
+      10,    11,    48,    90,    91,    26,    53,     6,    54,    27,
+       8,    14,    15,    18,    20,    22,    26,    27,    79,    80,
+      81,    82,    84,    26,    26,    47,    50,    50,    33,    26,
+      26,    55,     7,    56,    61,    81,    27,    42,    64,    65,
+      68,    70,    65,    81,    26,    31,    35,    40,    76,    34,
+      31,    40,    30,    83,     9,    35,    92,    92,    48,    30,
+      59,    59,    26,    27,    28,    29,    42,    62,    63,    33,
+      33,    26,    26,    57,    85,     9,    24,    26,    27,    28,
+      29,    35,    73,    75,    79,    16,    33,    41,    67,    69,
+      19,    21,    40,    26,    68,    77,    68,    26,    84,    26,
+      68,    82,     7,    93,    94,    30,    34,    27,    28,    30,
+      62,    25,    26,    88,    89,    33,    32,    86,    85,    34,
+      75,    76,    68,    23,    42,    71,    72,    43,    74,    80,
+      70,    80,    65,    66,    68,    32,    78,    36,    30,    36,
+      85,    26,    30,     9,    85,    87,    30,    89,    26,    34,
+      26,    36,    73,    75,    17,    44,    68,    94,    34,    30,
+      34,     9,    30,    30,    86,    26,    30,    72,    74,    80,
+      66,    78,    85,    26,    26,     9,    85,    30,    19,    34,
+      34,    80,    26,    26
   };
 
   const unsigned char
    mlaskal_parser ::yyr1_[] =
   {
        0,    45,    46,    47,    48,    49,    50,    51,    51,    52,
-      52,    53,    54,    54,    55,    55,    56,    57,    57,    58,
-      58,    59,    60,    60,    61,    61,    62,    62,    63,    63,
-      63,    64,    65,    65,    66,    66,    66,    67,    67,    67,
-      68,    68,    69,    70,    71,    71,    72,    73,    73,    74,
-      75,    75,    76,    76,    77,    78,    78,    79,    79,    79,
-      79,    79,    80,    80,    81,    82,    82,    83,    83,    84,
-      84,    84,    84,    84,    84,    84,    84,    84,    84,    85,
-      85,    86,    86,    87,    87,    88,    88,    89,    90,    90,
-      91,    91,    92,    92,    92,    93,    93,    94,    95,    96,
-      96,    97,    97,    98,    98
+      52,    53,    53,    54,    54,    55,    55,    56,    56,    57,
+      57,    58,    58,    58,    59,    60,    61,    61,    62,    62,
+      62,    63,    63,    63,    63,    64,    64,    65,    66,    67,
+      67,    68,    69,    69,    70,    71,    71,    72,    72,    73,
+      74,    74,    75,    75,    75,    75,    75,    75,    75,    76,
+      76,    77,    78,    78,    79,    79,    80,    80,    80,    80,
+      80,    80,    80,    80,    80,    80,    81,    81,    82,    82,
+      83,    83,    84,    84,    85,    86,    86,    87,    87,    88,
+      88,    88,    89,    89,    90,    91,    92,    92,    93,    93,
+      94,    94
   };
 
   const unsigned char
    mlaskal_parser ::yyr2_[] =
   {
        0,     2,     5,     4,     3,     3,     2,     0,     3,     0,
-       2,     5,     0,     5,     0,     2,     5,     0,     5,     0,
-       2,     5,     0,     5,     0,     1,     4,     4,     0,     4,
-       4,     2,     0,     3,     1,     2,     2,     1,     1,     1,
-       0,     1,     1,     1,     1,     1,     2,     0,     2,     3,
-       1,     1,     0,     3,     2,     0,     3,     1,     1,     2,
-       3,     2,     0,     3,     2,     0,     3,     3,     3,     3,
-       1,     2,     2,     3,     6,     4,     4,     4,     8,     0,
-       1,     3,     2,     0,     1,     3,     3,     2,     0,     3,
-       5,     3,     4,     3,     2,     1,     1,     4,     6,     0,
-       3,     6,     4,     0,     1
+       2,     5,     4,     0,     2,     5,     4,     0,     2,     5,
+       4,     0,     4,     4,     1,     2,     0,     3,     1,     2,
+       2,     1,     1,     1,     1,     0,     1,     1,     1,     1,
+       1,     2,     0,     2,     3,     1,     1,     0,     3,     2,
+       0,     3,     1,     2,     3,     2,     1,     1,     1,     0,
+       3,     2,     0,     3,     3,     3,     3,     1,     2,     2,
+       3,     6,     4,     4,     4,     8,     0,     1,     3,     2,
+       0,     1,     3,     3,     2,     0,     3,     5,     3,     4,
+       3,     2,     1,     1,     4,     6,     0,     3,     6,     4,
+       0,     1
   };
 
 
@@ -1167,10 +1732,9 @@ namespace yy {
   "SEMICOLON", "DOT", "COMMA", "EQ", "COLON", "LPAR", "RPAR", "DOTDOT",
   "LSBRA", "RSBRA", "ASSIGN", "OPER_REL", "OPER_SIGNADD", "OPER_MUL",
   "FOR_DIRECTION", "$accept", "mlaskal", "block_common", "body", "block_p",
-  "block", "block_p1_opt", "block_p2_opt", "block_p2_list",
-  "block_p2_next", "block_p3_opt", "block_p3_list", "block_p3_next",
-  "block_p4_opt", "block_p4_list", "block_p4_next", "block_p5_opt",
-  "block_p5_list", "block_p5_next", "uint_list_1", "uint_next", "constant",
+  "block", "block_p1_opt", "block_p2_opt", "block_p2_list", "block_p3_opt",
+  "block_p3_list", "block_p4_opt", "block_p4_list", "block_p5_opt",
+  "proc_func_end", "uint_list_1", "uint_next", "constant",
   "unsigned_constant", "pm_opt", "boolean_expression",
   "ordinal_expression", "expression_cmp", "expression", "expression_next",
   "simple_expression", "simple_expression_bin_op",
@@ -1187,17 +1751,17 @@ namespace yy {
   const unsigned short
    mlaskal_parser ::yyrline_[] =
   {
-       0,   114,   114,   121,   126,   131,   136,   140,   141,   144,
-     145,   147,   149,   150,   153,   154,   156,   158,   159,   162,
-     163,   165,   167,   168,   171,   172,   174,   175,   177,   178,
-     179,   182,   185,   186,   189,   190,   191,   195,   196,   197,
-     200,   201,   205,   207,   210,   211,   214,   217,   218,   221,
-     225,   226,   228,   229,   234,   238,   239,   244,   245,   248,
-     249,   250,   253,   254,   257,   260,   261,   264,   265,   269,
-     270,   273,   274,   275,   276,   277,   278,   279,   282,   290,
-     291,   294,   295,   298,   299,   302,   304,   307,   310,   311,
-     316,   317,   320,   321,   322,   330,   331,   334,   337,   340,
-     341,   344,   345,   348,   349
+       0,   119,   119,   126,   131,   136,   141,   145,   146,   149,
+     150,   152,   153,   156,   157,   160,   161,   164,   165,   168,
+     169,   172,   173,   174,   176,   180,   185,   186,   197,   198,
+     199,   211,   212,   213,   214,   217,   218,   222,   224,   227,
+     228,   231,   234,   235,   238,   242,   243,   245,   246,   251,
+     255,   256,   261,   265,   266,   267,   268,   269,   270,   273,
+     274,   277,   280,   281,   284,   285,   289,   290,   293,   294,
+     295,   296,   297,   298,   299,   302,   305,   306,   309,   310,
+     313,   314,   317,   319,   323,   327,   328,   338,   339,   349,
+     350,   351,   360,   361,   364,   367,   374,   375,   382,   385,
+     392,   393
   };
 
   // Print the state stack on the debug stream.
@@ -1230,19 +1794,19 @@ namespace yy {
 #endif // YYDEBUG
 
 
-} // yy
-#line 1235 "du3456g.tab.cc"
 
-#line 351 "du3456g.y"
+} // yy
+#line 1800 "du3456g.tab.cc" // lalr1.cc:1242
+#line 395 "du3456g.y" // lalr1.cc:1243
 
 
 
 namespace yy {
 
-	void mlaskal_parser::error(const location_type& l, const std::string& m)
-	{
-		message(DUERR_SYNTAX, l, m);
-	}
+    void mlaskal_parser::error(const location_type& l, const std::string& m)
+    {
+        message(DUERR_SYNTAX, l, m);
+    }
 
 }
 

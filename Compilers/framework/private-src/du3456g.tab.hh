@@ -1,4 +1,4 @@
-// A Bison parser, made by GNU Bison 3.4.2.
+// A Bison parser, made by GNU Bison 3.3.2.
 
 // Skeleton interface for Bison LALR(1) parsers in C++
 
@@ -44,14 +44,17 @@
 #ifndef YY_YY_DU3456G_TAB_HH_INCLUDED
 # define YY_YY_DU3456G_TAB_HH_INCLUDED
 // //                    "%code requires" blocks.
-#line 15 "du3456g.y"
+#line 15 "du3456g.y" // lalr1.cc:401
 
-	// this code is emitted to du3456g.hpp
+#include <deque>
+#include <variant>
 
-	// allow references to semantic types in %type
+    // this code is emitted to du3456g.hpp
+
+    // allow references to semantic types in %type
 #include "dutables.hpp"
 
-	// avoid no-case warnings when compiling du3g.hpp
+    // avoid no-case warnings when compiling du3g.hpp
 #pragma warning (disable:4065)
 
 // adjust YYLLOC_DEFAULT macro for our api.location.type
@@ -60,7 +63,7 @@
 #define YY_NULL	0
 #define YY_NULLPTR	0
 
-#line 64 "du3456g.tab.hh"
+#line 67 "du3456g.tab.hh" // lalr1.cc:401
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -174,9 +177,9 @@
 # define YYDEBUG 0
 #endif
 
-namespace yy {
-#line 179 "du3456g.tab.hh"
 
+namespace yy {
+#line 183 "du3456g.tab.hh" // lalr1.cc:401
 
 
 
@@ -379,29 +382,72 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // type
+      char dummy1[sizeof (
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+     )];
+
+      // field_list
+      // structured_type_3
+      char dummy2[sizeof (
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     )];
+
+      // method_parameters_opt
+      // formal_parameters
+      char dummy3[sizeof ( 
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     )];
+
+      // var_string_opt
+      char dummy4[sizeof (bool)];
+
       // FOR_DIRECTION
-      char dummy1[sizeof (mlc::DUTOKGE_FOR_DIRECTION)];
+      char dummy5[sizeof (mlc::DUTOKGE_FOR_DIRECTION)];
 
       // OPER_MUL
-      char dummy2[sizeof (mlc::DUTOKGE_OPER_MUL)];
+      char dummy6[sizeof (mlc::DUTOKGE_OPER_MUL)];
 
       // OPER_REL
-      char dummy3[sizeof (mlc::DUTOKGE_OPER_REL)];
+      char dummy7[sizeof (mlc::DUTOKGE_OPER_REL)];
 
       // OPER_SIGNADD
-      char dummy4[sizeof (mlc::DUTOKGE_OPER_SIGNADD)];
+      char dummy8[sizeof (mlc::DUTOKGE_OPER_SIGNADD)];
 
       // IDENTIFIER
-      char dummy5[sizeof (mlc::ls_id_index)];
+      char dummy9[sizeof (mlc::ls_id_index)];
 
       // UINT
-      char dummy6[sizeof (mlc::ls_int_index)];
+      char dummy10[sizeof (mlc::ls_int_index)];
 
       // REAL
-      char dummy7[sizeof (mlc::ls_real_index)];
+      char dummy11[sizeof (mlc::ls_real_index)];
 
       // STRING
-      char dummy8[sizeof (mlc::ls_str_index)];
+      char dummy12[sizeof (mlc::ls_str_index)];
+
+      // identifier_list_1
+      // identifier_next
+      char dummy13[sizeof (std::deque<mlc::ls_id_index>)];
+
+      // uint_list_1
+      // uint_next
+      char dummy14[sizeof (std::deque<mlc::ls_int_index>)];
+
+      // constant
+      // unsigned_constant
+      char dummy15[sizeof (std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+      )];
     };
 
     /// The size of the largest semantic type.
@@ -546,6 +592,78 @@ namespace yy {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+     && v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+     & v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     && v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     & v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t,  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     && v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+     & v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, bool&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const bool& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, mlc::DUTOKGE_FOR_DIRECTION&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -649,6 +767,59 @@ namespace yy {
         , location (l)
       {}
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::deque<mlc::ls_id_index>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::deque<mlc::ls_id_index>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::deque<mlc::ls_int_index>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::deque<mlc::ls_int_index>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+      && v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+      & v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
 
       /// Destroy the symbol.
       ~basic_symbol ()
@@ -672,6 +843,34 @@ namespace yy {
         // Type destructor.
 switch (yytype)
     {
+      case 89: // type
+        value.template destroy< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > ();
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.template destroy< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ();
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.template destroy<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > ();
+        break;
+
+      case 94: // var_string_opt
+        value.template destroy< bool > ();
+        break;
+
       case 44: // FOR_DIRECTION
         value.template destroy< mlc::DUTOKGE_FOR_DIRECTION > ();
         break;
@@ -702,6 +901,28 @@ switch (yytype)
 
       case 29: // STRING
         value.template destroy< mlc::ls_str_index > ();
+        break;
+
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.template destroy< std::deque<mlc::ls_id_index> > ();
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.template destroy< std::deque<mlc::ls_int_index> > ();
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.template destroy< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > ();
         break;
 
       default:
@@ -1616,7 +1837,7 @@ switch (yytype)
     // Tables.
   // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
   // STATE-NUM.
-  static const short yypact_[];
+  static const signed char yypact_[];
 
   // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
   // Performed when YYTABLE does not specify something else to do.  Zero
@@ -1884,8 +2105,8 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 213,     ///< Last index in yytable_.
-      yynnts_ = 54,  ///< Number of nonterminal symbols.
+      yylast_ = 193,     ///< Last index in yytable_.
+      yynnts_ = 50,  ///< Number of nonterminal symbols.
       yyfinal_ = 4, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
@@ -1960,6 +2181,34 @@ switch (yytype)
   {
     switch (this->type_get ())
     {
+      case 89: // type
+        value.move< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (std::move (that.value));
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.move< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (std::move (that.value));
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.move<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (std::move (that.value));
+        break;
+
+      case 94: // var_string_opt
+        value.move< bool > (std::move (that.value));
+        break;
+
       case 44: // FOR_DIRECTION
         value.move< mlc::DUTOKGE_FOR_DIRECTION > (std::move (that.value));
         break;
@@ -1992,6 +2241,28 @@ switch (yytype)
         value.move< mlc::ls_str_index > (std::move (that.value));
         break;
 
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.move< std::deque<mlc::ls_id_index> > (std::move (that.value));
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.move< std::deque<mlc::ls_int_index> > (std::move (that.value));
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.move< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (std::move (that.value));
+        break;
+
       default:
         break;
     }
@@ -2007,6 +2278,34 @@ switch (yytype)
   {
     switch (this->type_get ())
     {
+      case 89: // type
+        value.copy< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.copy< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.copy<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (that.value));
+        break;
+
+      case 94: // var_string_opt
+        value.copy< bool > (YY_MOVE (that.value));
+        break;
+
       case 44: // FOR_DIRECTION
         value.copy< mlc::DUTOKGE_FOR_DIRECTION > (YY_MOVE (that.value));
         break;
@@ -2039,6 +2338,28 @@ switch (yytype)
         value.copy< mlc::ls_str_index > (YY_MOVE (that.value));
         break;
 
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.copy< std::deque<mlc::ls_id_index> > (YY_MOVE (that.value));
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.copy< std::deque<mlc::ls_int_index> > (YY_MOVE (that.value));
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.copy< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (YY_MOVE (that.value));
+        break;
+
       default:
         break;
     }
@@ -2061,6 +2382,34 @@ switch (yytype)
     super_type::move (s);
     switch (this->type_get ())
     {
+      case 89: // type
+        value.move< 
+        std::variant< std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+                    , mlc::ls_id_index
+                    >
+      > (YY_MOVE (s.value));
+        break;
+
+      case 87: // field_list
+      case 88: // structured_type_3
+        value.move< 
+      //  collection of                       vars               type
+        std::vector<std::tuple< std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (s.value));
+        break;
+
+      case 92: // method_parameters_opt
+      case 93: // formal_parameters
+        value.move<  
+                          //pass by val,ref     identifiers               type
+        std::vector< std::tuple< bool, std::deque<mlc::ls_id_index>, mlc::ls_id_index > >
+      > (YY_MOVE (s.value));
+        break;
+
+      case 94: // var_string_opt
+        value.move< bool > (YY_MOVE (s.value));
+        break;
+
       case 44: // FOR_DIRECTION
         value.move< mlc::DUTOKGE_FOR_DIRECTION > (YY_MOVE (s.value));
         break;
@@ -2091,6 +2440,28 @@ switch (yytype)
 
       case 29: // STRING
         value.move< mlc::ls_str_index > (YY_MOVE (s.value));
+        break;
+
+      case 85: // identifier_list_1
+      case 86: // identifier_next
+        value.move< std::deque<mlc::ls_id_index> > (YY_MOVE (s.value));
+        break;
+
+      case 60: // uint_list_1
+      case 61: // uint_next
+        value.move< std::deque<mlc::ls_int_index> > (YY_MOVE (s.value));
+        break;
+
+      case 62: // constant
+      case 63: // unsigned_constant
+        value.move< std::variant<mlc::ls_int_index
+                  , mlc::ls_real_index
+                  , mlc::ls_str_index
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_int_index>
+                  , std::tuple<mlc::DUTOKGE_OPER_SIGNADD, mlc::ls_real_index>
+                  , bool
+                   >
+       > (YY_MOVE (s.value));
         break;
 
       default:
@@ -2166,9 +2537,9 @@ switch (yytype)
     return token_type (yytoken_number_[type]);
   }
 
-} // yy
-#line 2171 "du3456g.tab.hh"
 
+} // yy
+#line 2543 "du3456g.tab.hh" // lalr1.cc:401
 
 
 
