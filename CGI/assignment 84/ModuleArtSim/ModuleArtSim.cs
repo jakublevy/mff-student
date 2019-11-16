@@ -1,16 +1,11 @@
-﻿using MathSupport;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using _117raster.ModuleArtSim;
-using Utilities;
+using Modules;
 
-namespace Modules
+namespace JakubLevy
 {
   public class ModuleHSV : DefaultRasterModule
   {
@@ -19,7 +14,10 @@ namespace Modules
     /// </summary>
     public ModuleHSV ()
     {
-      
+      /*
+        Pokus o napodobení neoimpresionistické technicky zvané pointilismus (https://en.wikipedia.org/wiki/Pointillism).
+        Měl jsem obrovské problémy s obyčejným C# Random. Po nahrazení kryptograficky bezpečným randomem šum z obrázků zmizel.
+      */
     }
 
     /// <summary>
@@ -35,7 +33,7 @@ namespace Modules
     /// <summary>
     /// Tooltip for Param (text parameters).
     /// </summary>
-    public override string Tooltip => "";
+    public override string Tooltip => "Sem nic zajímavého nepříjde, modul se konfiguruje přes PropertyGrid.";
 
     Params p = new Params();
 
@@ -145,95 +143,74 @@ namespace Modules
       int hei = inImage.Height;
       PixelFormat iFormat = inImage.PixelFormat;
 
-      // Output image must be true-color.
-      outImage = new Bitmap(wid, hei, PixelFormat.Format24bppRgb);
-
       //for k-means
       Dictionary<Color, List<Color>> clusters;
       HashSet<Color> colors = new HashSet<Color>();
 
-      //TODO: calculate image
-      int xi, yi;
-      int xo, yo;
       BitmapData dataIn = inImage.LockBits(new Rectangle(0, 0, wid, hei), ImageLockMode.ReadOnly, iFormat);
-      BitmapData dataOut =
-        outImage.LockBits(new Rectangle(0, 0, wid, hei), ImageLockMode.WriteOnly, outImage.PixelFormat);
+      
+
+      int dI = Image.GetPixelFormatSize(iFormat) / 8; // pixel size in bytes
       unsafe
       {
-        byte* iptr, optr;
-        int dI = Image.GetPixelFormatSize(iFormat) / 8; // pixel size in bytes
-        int dO = Image.GetPixelFormatSize(outImage.PixelFormat) / 8; // pixel size in bytes
+        byte* iptr;
 
         //harvest all colors from image
-        yi = 0;
-        for (yo = 0; yo < hei; yo++)
+        for (int yi = 0; yi < hei; yi++)
         {
           iptr = (byte*)dataIn.Scan0 + yi * dataIn.Stride;
-          optr = (byte*)dataOut.Scan0 + yo * dataOut.Stride;
 
-          xi = 0;
-          for (xo = 0; xo < wid; xo++)
+          for (int xi = 0; xi < wid; xi++)
           {
             colors.Add(Color.FromArgb(iptr[2], iptr[1], iptr[0]));
             iptr += dI;
-            optr += dO;
-            ++xi;
           }
-          ++yi;
-        }
-
-      }
-      clusters = Utils.KMeans(p.K, colors.ToList(), p.Iterations);
-      List<Color> usableColors = clusters.Keys.ToList();
-     // List<Color> usableColors = Utils.ExtractColors(clusters, p.ColorFromClusterCount);
-
-      unsafe
-      {
-        byte* iptr, optr;
-        int dI = Image.GetPixelFormatSize(iFormat) / 8; // pixel size in bytes
-        int dO = Image.GetPixelFormatSize(outImage.PixelFormat) / 8; // pixel size in bytes
-
-        yi = 0;
-        for (yo = 0; yo < hei; yo++)
-        {
-          iptr = (byte*)dataIn.Scan0 + yi * dataIn.Stride;
-          optr = (byte*)dataOut.Scan0 + yo * dataOut.Stride;
-
-          xi = 0;
-          for (xo = 0; xo < wid; xo++)
-          {
-            Color c = Color.FromArgb(iptr[2], iptr[1], iptr[0]);
-
-            List<double> sm = Utils.Softmin(c, usableColors);
-            int idx = Utils.GenRandom(sm);
-            Color p = usableColors[idx];
-            optr[2] = p.R;
-            optr[1] = p.G;
-            optr[0] = p.B;
-
-            iptr += dI;
-            optr += dO;
-            ++xi;
-          }
-          ++yi;
         }
         inImage.UnlockBits(dataIn);
-        outImage.UnlockBits(dataOut);
       }
 
+      //Calculate K-means
+      clusters = Utils.KMeans(p.K, colors.ToList(), p.Iterations);
 
-      //using (Graphics g = Graphics.FromImage(outImage))
-        //{
-        //  int x = 10;
-        //  foreach (var cluster in clusters)
-        //  {
-        //    g.DrawLine(new Pen(cluster.Key), 50, x, 150, x);
-        //    x += 30;
-        //  }
+      //Dots' color
+      List<Color> usableColors = Utils.ExtractColors(clusters, p.ColorFromClusterCount);
 
-        //}
+      outImage = inImage.Clone(new RectangleF(0, 0, inImage.Width, inImage.Height), inImage.PixelFormat);
+      using (Graphics g = Graphics.FromImage(outImage))
+      {
+        int step = (int)p.DotSizeMax > 0 ? (int)p.DotSizeMax : 1;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
 
+        dataIn = inImage.LockBits(new Rectangle(0, 0, wid, hei), ImageLockMode.ReadOnly, iFormat);
+        unsafe
+        {
+          byte* iptr;
+          for (int i = 0; i < p.FilterIterations; ++i)
+          {
+            for (int yo = 0; yo < hei; yo += step)
+            {
+              iptr = (byte*)dataIn.Scan0 + yo * dataIn.Stride;
+              for (int xo = 0; xo < wid; xo += step)
+              {
+                double s = Utils.NextDouble();
+                if (s <= p.PutDotProbability)
+                {
+                  Color c = Color.FromArgb(iptr[2], iptr[1], iptr[0]);
+                  List<double> sm = Utils.Softmin(c, usableColors, p.SoftminSoftness);
+                  int idx = Utils.GenRandomFromDist(sm);
+                  Color n = usableColors[idx];
+
+                  double rad = Utils.NextDouble(p.DotSizeMin, p.DotSizeMax);
+                  g.FillCircle(new SolidBrush(n), new PointF(xo, yo), (float)rad);
+                }
+                iptr += dI * step;
+              }
+            }
+          }
+          inImage.UnlockBits(dataIn);
+        }
       }
+    }
 
     /// <summary>
     /// Returns an output raster image.

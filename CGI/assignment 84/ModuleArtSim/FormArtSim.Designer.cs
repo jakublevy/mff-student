@@ -1,4 +1,4 @@
-﻿namespace Modules
+﻿namespace JakubLevy
 {
   partial class FormArtSim
   {
@@ -37,7 +37,7 @@
             // buttonRecompute
             // 
             this.buttonRecompute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonRecompute.Location = new System.Drawing.Point(12, 178);
+            this.buttonRecompute.Location = new System.Drawing.Point(12, 253);
             this.buttonRecompute.Name = "buttonRecompute";
             this.buttonRecompute.Size = new System.Drawing.Size(147, 23);
             this.buttonRecompute.TabIndex = 11;
@@ -49,7 +49,7 @@
             // 
             this.buttonDeactivate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeactivate.Location = new System.Drawing.Point(165, 178);
+            this.buttonDeactivate.Location = new System.Drawing.Point(165, 253);
             this.buttonDeactivate.Name = "buttonDeactivate";
             this.buttonDeactivate.Size = new System.Drawing.Size(109, 23);
             this.buttonDeactivate.TabIndex = 12;
@@ -60,7 +60,7 @@
             // buttonReset
             // 
             this.buttonReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonReset.Location = new System.Drawing.Point(291, 178);
+            this.buttonReset.Location = new System.Drawing.Point(291, 253);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(87, 23);
             this.buttonReset.TabIndex = 2;
@@ -76,21 +76,21 @@
             this.paramsPropertyGrid.Location = new System.Drawing.Point(12, 17);
             this.paramsPropertyGrid.Name = "paramsPropertyGrid";
             this.paramsPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.paramsPropertyGrid.Size = new System.Drawing.Size(366, 155);
+            this.paramsPropertyGrid.Size = new System.Drawing.Size(366, 230);
             this.paramsPropertyGrid.TabIndex = 13;
             // 
             // FormArtSim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 212);
+            this.ClientSize = new System.Drawing.Size(390, 287);
             this.Controls.Add(this.paramsPropertyGrid);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.buttonDeactivate);
             this.Controls.Add(this.buttonRecompute);
             this.MinimizeBox = false;
             this.Name = "FormArtSim";
-            this.Text = "Module HSV";
+            this.Text = "Module ArtSim";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormHSV_FormClosed);
             this.ResumeLayout(false);
 

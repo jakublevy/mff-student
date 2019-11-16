@@ -88,6 +88,9 @@ namespace JakubLevy
             case '[':
               states.Push(currentState);
               break;
+            case '|':
+              currentState.CurrentAngle = currentState.CurrentAngle >= 180 ? currentState.CurrentAngle - 180 : currentState.CurrentAngle + 180;
+              break;
             case ']':
               if (states.Count > 0)
               {

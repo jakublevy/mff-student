@@ -34,7 +34,7 @@ namespace _092lines
 
       // Tooltip = help.
       tooltip =
-        "[koch|kochAnti|kochQuadratic|tree|binTree|flower|bush|fern|islandsAndLakes|map|brokenWindow|dragon|levyCCurve|sierpinski], gen=<int>, antialiasing=<bool>";
+        "[koch|kochAnti|kochQuadratic|tree|binTree|flower|bush|fern|islandsAndLakes|map|brokenWindow|dragon|levyCCurve|sierpinski|pentaplexity], gen=<int>, antialiasing=<bool>";
 
       // }}
     }
@@ -62,6 +62,7 @@ namespace _092lines
       bool dragon = false;
       bool levyCCurve = false;
       bool sierpinski = false;
+      bool pentaplexity = false;
 
       int gen = 4;
 
@@ -84,6 +85,7 @@ namespace _092lines
         Util.TryParse(p, "dragon", ref dragon);
         Util.TryParse(p, "levyCCurve", ref levyCCurve);
         Util.TryParse(p, "sierpinski", ref sierpinski);
+        Util.TryParse(p, "pentaplexity", ref pentaplexity);
         if (Util.TryParse(p, "gen", ref gen))
         {
           gen = Math.Max(0, gen);
@@ -163,6 +165,10 @@ namespace _092lines
         Sierpinski(c, gen);
       }
 
+      if (pentaplexity)
+      {
+        Pentaplexity(c, gen);
+      }
     }
 
     private static void PerformDrawing (Canvas c, List<DrawInfo> dis)
@@ -333,6 +339,13 @@ namespace _092lines
       Lsystem lsys = new Lsystem("F-G-G", new Dictionary<char, string>{ {'F', "F-G+F+G-F" }, {'G', "GG"} });
       lsys.NthGeneration(gen);
       RenderLsystem(c, lsys.Sentence, "Sierpinski triangle", gen, 120, new Point(-1, 0), new Dictionary<char, Color> { { 'F', Color.DarkRed }, {'G', Color.FromArgb(136,135,232)} });
+    }
+
+    private static void Pentaplexity (Canvas c, int gen)
+    {
+      Lsystem lsys = new Lsystem("F++F++F++F++F", new Dictionary<char, string>{ {'F', "F++F++F|F-F++F" } });
+      lsys.NthGeneration(gen);
+      RenderLsystem(c, lsys.Sentence, "Pentaplexity", gen, 36, new Point(1,0), new Dictionary<char, Color> { { 'F', Color.Violet } });
     }
   }
 }

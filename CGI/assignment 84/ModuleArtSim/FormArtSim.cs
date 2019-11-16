@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
-using _117raster.ModuleArtSim;
+using Modules;
 
-namespace Modules
+namespace JakubLevy
 {
   public partial class FormArtSim : Form
   {
@@ -23,12 +18,15 @@ namespace Modules
     /// </summary>
     protected bool dirty = true;
 
-    private Params config = new Params {K = 20, ColorFromClusterCount = 3, Iterations = 35};
+    private Params config = new Params {K = 20, ColorFromClusterCount = 3, Iterations = 35, DotSizeMin = 0.1, DotSizeMax = 3, PutDotProbability = 0.6, FilterIterations = 1, SoftminSoftness = 20};
 
     public FormArtSim (IRasterModule hModule)
     {
       module = hModule;
       InitializeComponent();
+
+      //prefer using . than , in decimal numbers
+      Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
       paramsPropertyGrid.SelectedObject = config;
     }
@@ -37,6 +35,23 @@ namespace Modules
     {
       if (module == null)
         return;
+
+      //input check
+      config.K = Math.Max(1, config.K);
+      config.ColorFromClusterCount = Math.Max(0, config.ColorFromClusterCount);
+      config.Iterations = Math.Max(0, config.Iterations);
+      config.SoftminSoftness = config.SoftminSoftness > 0 ? config.SoftminSoftness : 0.01;
+      config.DotSizeMin = config.DotSizeMin > 0 ? config.DotSizeMin : 0.01;
+      config.DotSizeMax = config.DotSizeMax >= config.DotSizeMin ? config.DotSizeMax : config.DotSizeMin + 3;
+
+      if (config.PutDotProbability < 0 || config.PutDotProbability > 1)
+      {
+        config.PutDotProbability = 0.6;
+      }
+
+      config.FilterIterations = config.FilterIterations >= 0 ? config.FilterIterations : 1;
+
+      paramsPropertyGrid.SelectedObject = config;
 
       if (dirty)
       {
@@ -49,9 +64,8 @@ namespace Modules
 
     private void buttonReset_Click (object sender, EventArgs e)
     {
-      //TODO: reset values
 
-      paramsPropertyGrid.SelectedObject = new Params {K = 20, ColorFromClusterCount = 3, Iterations = 35};
+      paramsPropertyGrid.SelectedObject = new Params {K = 20, ColorFromClusterCount = 3, Iterations = 35, DotSizeMin = 0.1, DotSizeMax = 3, PutDotProbability = 0.6, FilterIterations = 1, SoftminSoftness = 20};
 
       module?.OnGuiWindowChanged();
       dirty = false;
@@ -77,6 +91,14 @@ namespace Modules
 
         module.OnGuiWindowClose();
       }
+    }
+
+    protected override bool ProcessCmdKey (ref Message msg, Keys keyData)
+    {
+      if (keyData == Keys.Enter)
+        buttonRecompute.PerformClick();
+      
+      return base.ProcessCmdKey(ref msg, keyData);
     }
   }
 }

@@ -49,7 +49,7 @@ namespace JakubLevy
 
     public static bool IsNotMovingChar (char c)
     {
-      return c == '+' || c == '-' || c == '[' || c == ']';
+      return c == '+' || c == '-' || c == '[' || c == ']' || c == '|';
     }
 
     /// <summary>

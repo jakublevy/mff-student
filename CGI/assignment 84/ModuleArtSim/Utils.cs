@@ -3,26 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
+using System.Security.Cryptography;
 
-namespace _117raster.ModuleArtSim
+namespace JakubLevy
 {
   class Utils
   {
     public static double ColorDistance (Color c1, Color c2)
     {
       return Math.Sqrt((c2.R - c1.R) * 0.3 * ((c2.R - c1.R) * 0.3) + ((c2.G - c1.G) * 0.59) * ((c2.G - c1.G) * 0.59) + ((c2.B - c1.B) * 0.11) * ((c2.B - c1.B) * 0.11));
-      //double l1 = Math.Sqrt(c1.R * c1.R + c1.G * c1.G + c1.B * c1.B);
-      //double l2 = Math.Sqrt(c2.R * c2.R + c2.G * c2.G + c2.B * c2.B);
-      //return Math.Abs(l1 - l2);
     }
 
     public static Color RandomColor ()
     {
-      Random rnd =new Random();
+      RandomGenerator rnd = new RandomGenerator();
       return Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
     }
 
@@ -120,7 +114,7 @@ namespace _117raster.ModuleArtSim
         else
         {
           HashSet<int> addedIdxs = new HashSet<int>();
-          Random rnd = new Random();
+          RandomGenerator rnd = new RandomGenerator();
           while (addedIdxs.Count < colorFromClusterCount)
           {
             int idx = rnd.Next(0, cluster.Value.Count);
@@ -138,12 +132,12 @@ namespace _117raster.ModuleArtSim
       return output;
     }
 
-    public static List<double> Softmin (Color original, List<Color> usableColors)
+    public static List<double> Softmin (Color original, List<Color> usableColors, double softness)
     {
       List<double> distances = new List<double>();
       for (int i = 0; i < usableColors.Count; ++i)
       {
-        distances.Add(-ColorDistance(original, usableColors[i]));
+        distances.Add(-ColorDistance(original, usableColors[i]) / softness);
       }
       List<double> exponents = new List<double>();
       double sum = 0;
@@ -153,39 +147,18 @@ namespace _117raster.ModuleArtSim
         sum += exponents.Last();
       }
       List<double> ret = new List<double>();
-      for(int i =0; i < distances.Count; ++i)
+      for(int i = 0; i < distances.Count; ++i)
       {
         ret.Add(exponents[i] / sum);
       }
 
-      for (int i = 0; i < distances.Count; ++i)
-      {
-        
-
-        //}
-        //else if (ret[i] > 0.5)
-        //{
-        //  Inc(0.1, ret);
-        //  ret[i] -= 0.05;
-        //}
-      }
 
       return ret;
     }
 
-    private static void Inc (double v, List<double> vals)
+    public static int GenRandomFromDist (List<double> distribution)
     {
-      for (int i = 0; i < vals.Count; ++i)
-      {
-        vals[i] += v;
-      }
-    }
-
-    public static int GenRandom (List<double> distribution)
-    {
-      Random rnd = new Random();
-      double rndN = rnd.NextDouble();
-
+      double rndN = NextDouble();
       double acc = 0;
       for (int i = 0; i < distribution.Count; ++i)
       {
@@ -198,23 +171,64 @@ namespace _117raster.ModuleArtSim
 
       return distribution.Count - 1;
     }
+
+    public static double NextDouble ()
+    {
+      var rng = new RNGCryptoServiceProvider();
+      var bytes = new byte[8];
+      rng.GetBytes(bytes);
+      var ul = BitConverter.ToUInt64(bytes, 0) / (1 << 11);
+      double d = ul / (double)(1UL << 53);
+      return d;
+    }
+
+    public static double NextDouble (double min, double max)
+    {
+      return min + (max - min) * NextDouble();
+    }
   }
   class Params
   {
-    [Description("k-means k parameter")]
+    [Description("K-means K parameter\nMin = 1")]
     public int K { get; set; }
 
     [DisplayName("# colors from cluster")]
-    [Description("Number of colors to take from a single cluster")]
+    [Description("Number of additional colors to take from each cluster\nMin = 0")]
     public int ColorFromClusterCount { get; set; }
 
 
-    [DisplayName("# K-means iter")]
-    [Description("Number of K-means iterations to run")]
+    [DisplayName("# K-means iterations")]
+    [Description("Number of K-means iterations to run\nMin = 0")]
     public int Iterations { get; set; }
 
-    [DisplayName("# pixels grouped")]
-    [Description("Number of pixels that should be grouped together")]
-    public int PixelSize { get; set; }
+    [DisplayName("softmin softness")]
+
+    [Description("Determines how soft is the softmin function.\nBigger number ~ softer\nSmaller number ~ harder (Min > 0)")]
+    public double SoftminSoftness { get; set; }
+    [DisplayName("min dot size")]
+
+    [Description("Minimum size of each individual dot\n> 0")]
+    public double DotSizeMin { get; set; }
+
+    [DisplayName("max dot size")]
+
+    [Description("Maximum size of each individual dot\n>= min dot size")]
+    public double DotSizeMax { get; set; }
+
+    [DisplayName("dot probability")]
+    [Description("Probability of making a dot on a pixel\n0 <= dot probability <= 1")]
+    public double PutDotProbability { get; set; }
+
+    [DisplayName("# filter iterations")]
+    [Description("# times to apply dot filter\nMin = 0")]
+    public int FilterIterations { get; set; }
+  }
+
+  public static class ExtensionMethods
+  {
+    public static void FillCircle (this Graphics g, Brush p, PointF pt, float rad)
+    {
+      g.FillEllipse(p, pt.X - rad, pt.Y - rad, rad * 2, rad * 2);
+    }
   }
 }
