@@ -4,6 +4,10 @@ Vytvořeno pro DBA @ MFF ZS 19/20
 
 Tento soubor obsahuje testovací demo předvádějící hlavní funkcionalitu DB.
 Předpokládáme, že v DB jsou již testovací data obsažena v souboru '1. testovaci_data.sql'
+
+Přeskočeny byli zejména zřejmé a nezajímavé části (procedůry Přidej_*, Smaž_*, ...)
+Přeskočené části jsou buďto zdokumentovány, nebo je jasná jejich funkcionalita z kódu
+a žádnou dokumentaci nevyžadují.
 */
 
 --Test constraints
@@ -336,8 +340,223 @@ exec Hostování_Mateřský_Klub 'TJ Koněpůlky'
 exec Hostování_Mateřský_Klub 'SK Solnice'
 --ve výpisu je Anna Kutinová
 
+--Hráči_Podle_Kategorie
+--Vrátí všechny hráče spadající pod kategorii Starší přípravka
+exec Hráči_Podle_Kategorie 'Starší dorost'
+
+--Neprojde, máme na mysli dívčí nebo chlapeckou kategorii?
+exec Hráči_Podle_Kategorie 'Starší přípravka'
+
+--Tohle už projde
+exec Hráči_Podle_Kategorie 'Starší přípravka', 'ž'
+
+--Koupit_Hráče
+--Z testovacích dat máme v DB Vladana Vomáčku, který má již prošlé hostování
+--Tedy soupiska obsahující Vladana nemůže být soupiskou utkání
+--Kontrola
+select * from Hráči_Prošlé_Hostování
+
+--Avšak bychom, chtěli aby s námi Vladan mohl hrát, štědrá FAČR nám přispěla
+--a tak máme na nákup -- koupíme si Vladana
+declare @vladan_reg int
+select @vladan_reg = [Reg. č.] from Hráči_Prošlé_Hostování where Jméno = 'Vladan' and Příjmení = 'Vomáčka'
+exec Koupit_Hráče @vladan_reg
+
+--Nyní již Vladan není v seznamu hráčů s prošlým hostováním
+select * from Hráči_Prošlé_Hostování
+
+--Smaž_Nevyužité_Adresy, Smaž_Nevyužité_Kontakty, Smaž_Prázdné_Soupisky
+--Procedůry sloužící v vyčištění sirotků z DB
+--Nevyužitá adresa = adresa, na které nesídlí klub
+--Neyužitý kontakt = kontakt, který nezapsal soupisku, není hráčem, není rozhodčím, ani není správce klubu
+--Prázdná soupiska = soupiska neobsahující hráče
+--Předvedeme pouze Smaž_Nevyužité adresy (ostatní jsou obdobné, nezajímavé)
+--Nejprve se ujistíme se, že v DB nemáme žádné zbytečné adresy
+exec Smaž_Nevyužité_Adresy --to poznáme tak, že se nám již žádný sloupec z DB nesmaže po spuštění příkazu
+
+--Nyní přidáme 3 adresy, přičemž jednu z nich asociujeme k novému klubu
+exec Přidej_Adresu 'Tyršova', '118/26', 'Broumov', '70003' 
+exec Přidej_Adresu 'Pleskotova', '12', 'Nymburk', '53478'
+exec Přidej_Klub 'FK Jaroměř', 'Dlouhá', '1055', 'Jaroměř', '58972' --čímž jsme zároveň přidali klub i adresu
+
+--Podíváme se na adresy v DB
+select * from Adresa where Ulice = 'Tyršova' or Ulice = 'Pleskotova' or Ulice = 'Dlouhá'
+--V computed column Využita ihned vidíme, že adresa klubu FK Jaroměř je využita
+
+--Vyčistíme adresy
+exec Smaž_Nevyužité_Adresy
+
+--A zkusíme znovu najít v DB naši trojci adres
+select * from Adresa where Ulice = 'Tyršova' or Ulice = 'Pleskotova' or Ulice = 'Dlouhá'
+--a zbyla tam jen jediná -- ta patřící klubu Jaroměře
+
+--Utkání_Proti
+--Podíváme se, na hřišti kterého klubu se odehrálo nejvíce utkání
+--(Sice nemusel hrát klub, kterému hriště patří, ale dá se to předpokládat)
+select top 1 * from Klub_Adresa_Počet_Utkání
+where [Název klubu] <> 'SEPA Žabáci' --vyřadíme naše hriště
+order by [Počet utkání na hřišti klubu] desc
+--2 zápasy se odehráli na hřišti klubu VEBA Machov
+
+--Teď se podíváme na utkání, která jsme proti tomuto klubu hráli my
+declare @kl nvarchar(50)
+select top 1 @kl = [Název klubu] from Klub_Adresa_Počet_Utkání
+where [Název klubu] <> 'SEPA Žabáci' --vyřadíme naše hriště
+order by [Počet utkání na hřišti klubu] desc
+exec Utkání_Proti @kl
+--Jej, oba dva zápasy jsme hráli my a oba jsme prohráli
+
+--Ještě jeden malý příklad, v testovacích datech jsme přidali dva zápasy proti
+--klubu SK Babí (druhý byl odvetný). Podíváme se na všechny utkání proti SK Babí
+exec Utkání_Proti 'SK Babí'
+
 --Test funkcí
+--Součástí DB je jedna table-valued funkce, ostatní funkce jsou scalar-valued
 
+--Table valued function dbo.Urči_Ml_Kategorii
+--Přidáme si hráčku, které je aktuálně 13 let ==> spadá pod kategorii starších žákyň
+exec Přidej_Hráče '9837244', 'Jana', 'Nováková', 'ženské', '2006-07-18', 'janca.n@outlook.cz', '748098111'
 
+--Nyní zkusíme zavolat funkci dbo.Urči_Ml_Kategorii, měla by nám vrátít dvojci
+-- Název kategorie, bit značící pohlaví
+--( Starší žákyně ,       0)
+select * from dbo.Urči_Ml_Kategorii_Pohlaví('9837244')
 
---Test pohledů
+--Následují některé scalar-valued funkce
+
+--dbo.Ml_Kategorie_Formátované
+--Vrátí název kategorie (přidá pohlaví do textového řetězce, pokud není zřejmé z názvu kategorie)
+
+declare @kat2 nvarchar(25)
+exec @kat2 = dbo.Ml_Kategorie_Formátované 'Mladší přípravka', 1
+print @kat2
+--OK
+
+declare @kat3 nvarchar(25)
+exec @kat3 = dbo.Ml_Kategorie_Formátované 'Mladší přípravka', 0
+print @kat3
+--OK
+
+declare @kat4 nvarchar(25)
+exec @kat4 = dbo.Ml_Kategorie_Formátované 'Mladší žákyně'
+print @kat4
+
+declare @kat1 nvarchar(25)
+exec @kat1 = dbo.Ml_Kategorie_Formátované 'Mladší přípravka'
+print @kat1
+--ERR (děvčata nebo chlapci?)
+
+--dbo.Ml_Kategorie_Pohlaví
+--Vrátí bit značící pohlaví kategorie
+--(pro kategorie z jejichž názvu není možné zjistit pohlaví nastane výjimka)
+select dbo.Ml_Kategorie_Pohlaví('Mladší dorost')
+--OK 1
+
+select dbo.Ml_Kategorie_Pohlaví('Ženy')
+--OK 0
+
+select dbo.Ml_Kategorie_Pohlaví('Starší přípravka')
+--ERR
+
+--dbo.Skóre
+--Bude nejprve předvedeno za pomocí pohledu Zápas, který
+--pro zobrazení skóre využívá tuto funkci
+--Vybereme si utkání proti klubu klubu SK Babí
+declare @k_id int
+select @k_id = Id from Klub where Název = 'SK Babí'
+select * from Utkání where Soupeř_Id = @k_id
+select * from Zápas where Soupeř = 'SK Babí'
+--Pozn. výstup funkce dbo.Skóre závisí zda-li
+--se jedná o utkání odehrané doma nebo venku
+--Pro utkání doma platí formát: naše_skóre : skóre_soupeře (naše_skóre_poločas : skóre_soupeře_poločas)
+--Pro utkání venku platí formát: skóre_soupeře : naše_skóre (skóre_soupeře_poločas : naše_skóre_poločas)
+
+--Přímé volání funkce dbo.Skóre
+--Zápas doma, o poločase jsme vedli 1 : 0, utkání skončilo 5 : 3
+select dbo.Skóre('Doma', 5, 3, 1, 0)
+
+--To samé, ale zápas se odehrál venku
+select dbo.Skóre('Venku', 5, 3, 1, 0)
+
+--dbo.Tel_Číslo
+--Spojí předvolbu telefoního čísla s telefoním číslem samotným
+--Pokud je předvolba nevyplněna implicitně se předpokládá česká +420
+
+--Test s předvolbou
+select top 1 * from Tel where Předvolba is not null
+declare @tel1_id int
+select top 1 @tel1_id = Id from Tel where Předvolba is not null
+select dbo.Tel_Číslo(@tel1_id)
+
+--Test bez předvolby
+select top 1 * from Tel where Předvolba is null
+declare @tel2_id int
+select top 1 @tel2_id = Id from Tel where Předvolba is null
+select dbo.Tel_Číslo(@tel2_id)
+
+--dbo.Urči_Ml_Kategorii
+--Vrátí kategorii, pod kterou hráč spadá
+--Přidáme si alespoň 3 hráče:
+	-- Prvním bude Milan Baroš nar. dne 28. 10. 1981 ==> kategorie muži
+	-- Druhý bude Jan Veber, kterému je 12 let ==> kategorie mladší žáci
+	-- Třetí bude Marta Jirmanová, které je 16 let ==> kategorie mladší dorostenky
+--a zkontrolujeme funkčnost funkce dbo.Urči_Ml_Kategorii
+exec Přidej_Hráče '8989123', 'Milan', 'Baroš', 'mužské', '10-28-1981', 'milan.baros@email.cz', '238972939'
+exec Přidej_Hráče '8324922', 'Jan', 'Veber', 'mužské', '08-29-2007', 'jan.veber@seznam.cz', '983247892'
+exec Přidej_Hráče '2347682', 'Marta', 'Jirmanová', 'ženské', '10-14-2003', 'marta@jermanova.cz', '327962348'
+
+select dbo.Urči_Ml_Kategorii('8989123')
+--OK Muži
+
+select dbo.Urči_Ml_Kategorii('8324922')
+--OK Mladší žáci
+
+select dbo.Urči_Ml_Kategorii('2347682') 
+--OK Mladší dorostenky
+
+--dbo.Věk
+--Dostane datum narození, vrátí věk
+select dbo.Věk('2011-09-19') --aktuálně 8 let
+select dbo.Věk('1959-11-12') --aktuálně 60 let
+select dbo.Věk('2019-07-06') --aktuálně 0 let
+
+--dbo.Vlastním_Hráče
+--Tuto funkci využívá pohled Hráči_Vlastnění
+--Vlastním pouze hráče, kteří nemají žádný záznam (myšleno i prošlý) v tabulce Hostování
+
+--Přidáme si nového hráče a nepřidáme mu žádné hostování
+exec Přidej_Hráče '9328417', 'Ferda', 'Mravenec', 'mužské', '1933-01-01', 'f.mravenec@sejkora.cz'
+
+--Ferda Mravenec je mezi mnou vlastněnými hráči
+select * from Hráči_Vlastnění where [Reg. č.] = '9328417'
+
+--Jakmile přidáme jakékoliv hostování, přestanu být vlastníkem Ferdy Mravence
+declare @lck int
+select @lck = Id from Klub where Název = 'Lokomotiva Červený Kostelec'
+exec Přidej_Hostování '50BD234DE2525', '2016-09-12', '2018-03-22', 65000, '9328417', @lck
+
+--Kontrola
+select * from Hráči_Vlastnění where [Reg. č.] = '9328417'
+
+--Po odstranění hostování jsme opět vlastníkem
+--delete from Hostování where Kontrakt_Id = '50BD234DE2525'
+--nebo lépe
+exec Koupit_Hráče '9328417'
+
+--Kontrola
+select * from Hráči_Vlastnění where [Reg. č.] = '9328417'
+
+--TODO:
+
+--Pohledy
+--Následují některé pohledy, které ještě nebyly předvedeny při předvedení ostatních částí DB
+
+--Už byli ukázány
+--Hráči_Hostování
+--Hráči_Na_Soupisce
+--Hráči
+--Klub_Adresa_Počet_Utkání
+--Nevyužité_Kontakty
+--Zápas
+--Hráči_Prošlé_Hostování
+--Hráči_Vlastnění

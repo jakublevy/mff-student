@@ -61,7 +61,7 @@ select Reg_Id AS 'Reg. č.', Jméno, Příjmení, dbo.Ml_Kategorie_Formátované
 	  , Email, dbo.Tel_Číslo(Tel_Id) as 'Tel. číslo' 
 from Hráč
 join Kontakt on Kontakt.Id = Hráč.Kontakt_Id
-join Tel on Tel.Id = Kontakt.Tel_Id
+left join Tel on Tel.Id = Kontakt.Tel_Id
 GO
 
 --Všichni dostupní hráči s platným hostováním
@@ -97,7 +97,7 @@ select Reg_Id AS 'Reg. č.', Jméno, Příjmení, dbo.Ml_Kategorie_Formátované
 	 , Email, dbo.Tel_Číslo(Tel_Id) as 'Tel. číslo' 
 from Hráč
 join Kontakt on Kontakt.Id = Hráč.Kontakt_Id
-join Tel on Tel.Id = Kontakt.Tel_Id
+left join Tel on Tel.Id = Kontakt.Tel_Id
 join Rozhodčí on Rozhodčí.Kontakt_Id = Hráč.Kontakt_Id
 GO
 
@@ -115,7 +115,7 @@ from (
 	) as h1
 join Hráč h2 on h2.Reg_Id = h1.Reg_Id
 join Kontakt on Kontakt.Id = h2.Kontakt_Id
-join Tel on Tel.Id = Kontakt.Tel_Id
+left join Tel on Tel.Id = Kontakt.Tel_Id
 GO
 
 --Hráči s počtem odehraných zápasů v dresu s číslem...

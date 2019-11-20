@@ -53,3 +53,17 @@ ALTER DATABASE [Levý_Fotbal]
 SET SINGLE_USER
 WITH ROLLBACK IMMEDIATE;
 drop database [Levý_Fotbal] 
+GO
+
+--Vypnutí clr
+sp_configure 'show advanced options', 1;
+GO
+RECONFIGURE;
+GO
+sp_configure 'clr enabled', 0;
+GO
+RECONFIGURE;
+GO
+sp_configure 'show advanced options', 0;
+GO
+RECONFIGURE;

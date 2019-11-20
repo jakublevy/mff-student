@@ -59,7 +59,7 @@ begin
 		Reg_Id AS 'Reg. č.', Jméno, Příjmení, dbo.Ml_Kategorie_Formátované(@kategorie, @p_b) as 'Hráčská kat.', 
 		Email, dbo.Tel_Číslo(Tel_Id) as 'Tel. číslo' from Hráč
 	join Kontakt on Kontakt.Id = Hráč.Kontakt_Id
-	join Tel on Tel.Id = Kontakt.Tel_Id
+	left join Tel on Tel.Id = Kontakt.Tel_Id
 	where Muž = @p_b and lower(dbo.Urči_Ml_Kategorii(Reg_Id)) = lower(@kategorie)
 end
 GO

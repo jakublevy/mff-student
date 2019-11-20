@@ -29,6 +29,21 @@ utkání, která mimo jiné obsahují soupisku hráčů, rozhodčího a sezónu,
 Nad definicí každé tabulky se nachází popis potencionálně nejasných parametrů, případný popis významu celé tabulky.
 */
 
+--DB využívá jednu CLR funkci (viz 3. vytvoreni_funkci)
+--Potřebujeme nejprve na serveru povolit clr
+sp_configure 'show advanced options', 1;
+GO
+RECONFIGURE;
+GO
+sp_configure 'clr enabled', 1;
+GO
+RECONFIGURE;
+GO
+sp_configure 'show advanced options', 0;
+GO
+RECONFIGURE;
+GO
+
 CREATE DATABASE [Levý_Fotbal]
 COLLATE Czech_CS_AS --CS - case sensitive, AS - accent sensitive
 					--nutné, nechceme problémy s ř a ž
