@@ -5,7 +5,7 @@ Vytvořeno pro DBA @ MFF ZS 19/20
 Tento soubor obsahuje testovací demo předvádějící hlavní funkcionalitu DB.
 Předpokládáme, že v DB jsou již testovací data obsažena v souboru '1. testovaci_data.sql'
 
-Přeskočeny byli zejména zřejmé a nezajímavé části (procedůry Přidej_*, Smaž_*, ...)
+Přeskočeny byly zejména zřejmé a nezajímavé části (procedůry Přidej_*, Smaž_*, ...)
 Přeskočené části jsou buďto zdokumentovány, nebo je jasná jejich funkcionalita z kódu
 a žádnou dokumentaci nevyžadují.
 */
@@ -91,6 +91,7 @@ exec Přidej_Kontakt 'Jaromír', 'Soukup', 'jarda@barrandov.cz', '774715855', @p
 --Constraints tabulky Utkání
 --Neprojde ani jeden příkaz
 exec Přidej_Utkání 101, 5, 1, 1, 1, 1, 'Mladší dorost' --nemůže padnou 101 gólu ve fotbale v rámci jednoho utkání
+
 --O poločase víc gólu než na konci utkání
 exec Přidej_Utkání 5, 3, 1, 1, 1, 1, 'Starší žáci', @goly_my_polocas = 2, @goly_souper_polocas = 4 -- 5 : 3 (2 : 4) je neplatné skóre
 
@@ -100,6 +101,7 @@ exec Přidej_Utkání 5, 3, 1, 1, 1, 1, 'Starší žáci', @goly_my_polocas = 2,
 --Trigger na tabulce Hostování
 --V DB je hráč s reg. č. '1915044' s platným hostováním od '2013-03-15' do '2013-12-12'
 select * from Hráči_Hostování where [Reg. č.] = '1915044'
+
 --Pokusíme se tomuto hráči přidat další hostování, které má neprázdný průnik s již existujícím hostováním
 --Příkaz neprojde
 declare @c1 int
@@ -210,6 +212,7 @@ select * from Hráči_Na_Soupisce where [Id soupisky] IN (select max(Id) from So
 --Trigger na tabulce Klub
 --Na adrese klubu VEBA Machov se odehrály dvě utkání
 select * from Klub_Adresa_Počet_Utkání where [Název klubu] = 'VEBA Machov'
+
 --Vzhledem k tomu by z DB nemělo být možné odstranit klub VEBA Machov
 --A také není, následující dotaz neprojde
 delete from Klub where Název = 'VEBA Machov'
@@ -224,25 +227,32 @@ delete from Klub where Název = 'VEBA Machov'
 --Pokud jsme spustili všechny předchozí příklady, které měli projít
 --měli bychom v DB mít jeden neužitečný kontakt (James Bond)
 select * from Nevyužité_Kontakty
+
 --Pokud chybí, tak spustit: exec Přidej_Kontakt 'James', 'Bond', @tel_cislo = '007007007', @predvolba = '+44'
 --V tabulce Tel je uloženo telefonní číslo Jamese Bonda
 select * from Tel where Předvolba = '+44'
+
 --Smažeme Jamese Bonda z DB
 delete from Kontakt where Jméno = 'James' and Příjmení = 'Bond'
 --Ve výpisu:
 --(1 row affected)
 --(1 row affected)
 --Smazal se kontakt i jeho telefonní informace
+
+--Kontrola
 select * from Tel where Předvolba = '+44'
 
 --Trigger Smaž_Tel_Pokud_Změněn na tabulce Kontakt
 --Vraťme se do původní situace, přidejme si opět Jamese Bonda do DB
 exec Přidej_Kontakt 'James', 'Bond', @tel_cislo = '007007007', @predvolba = '+44'
+
 --Opět se v tabulce Tel nachází jeho telefonní číslo
 select * from Tel where Předvolba = '+44'
+
 --Nyní se ho pokusíme změnit na nové číslo (divným způsobem, aby staré číslo zůstalo v DB)
 insert into Tel (Předvolba, Číslo) VALUES ('+44', '111111111')
 update Kontakt SET Tel_Id = SCOPE_IDENTITY() where Jméno = 'James' and Příjmení = 'Bond'
+
 --Opět byli upraveny 2 řádky v DB
 --Staré číslo by již nebylo vázáno na existující Kontakt a tak bylo smazáno z DB
 select * from Tel where Předvolba = '+44'
@@ -404,7 +414,7 @@ select * from Nevyužité_Adresy
 select top 1 * from Klub_Adresa_Počet_Utkání
 where [Název klubu] <> 'SEPA Žabáci' --vyřadíme naše hriště
 order by [Počet utkání na hřišti klubu] desc
---2 zápasy se odehráli na hřišti klubu VEBA Machov
+--2 zápasy se odehrály na hřišti klubu VEBA Machov
 
 --Teď se podíváme na utkání, která jsme proti tomuto klubu hráli my
 declare @kl nvarchar(50)
@@ -448,6 +458,7 @@ print @kat3
 declare @kat4 nvarchar(25)
 exec @kat4 = dbo.Ml_Kategorie_Formátované 'Mladší žákyně'
 print @kat4
+--OK
 
 declare @kat1 nvarchar(25)
 exec @kat1 = dbo.Ml_Kategorie_Formátované 'Mladší přípravka'
@@ -740,7 +751,7 @@ select * from Rozhodčí_Počet_Odpískaných_Utkání
 select * from Sezóna_Počet_Utkání
 
 --V sezoně 2011/2012 se odehrála 2 utkání
---Podíváme se na všechna utkání sezóny 2011/2012 zkrze pohled Zápas
+--Podíváme se na všechna utkání sezóny 2011/2012 skrze pohled Zápas
 select * from Zápas where [Sez. start] = '2011-03-06'
 --Vskutku se jedná o dvě utkání
 
