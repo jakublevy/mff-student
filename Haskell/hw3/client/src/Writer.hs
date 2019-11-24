@@ -1,12 +1,11 @@
 module Writer(Writer
-           , WriteCmd(..)
            , initWriter
            , write
-           , stop) where
+           , stopWriter) where
 
 import Control.Concurrent
-import Control.Concurrent.MVar
-import System.IO
+import Control.Concurrent.MVar(MVar)
+import System.IO(Handle, hPutStr, hFlush)
 
 newtype Writer = Writer (MVar WriteCmd)
 data WriteCmd = Message Handle String | Stop (MVar ())
@@ -36,8 +35,8 @@ write (Writer m) h msg = do
                          forkIO $ putMVar m (Message h msg)
                          return ()
 
-stop :: Writer -> IO ()
-stop (Writer m) = do
+stopWriter :: Writer -> IO ()
+stopWriter (Writer m) = do
                   s <- newEmptyMVar
                   putMVar m (Stop s)
                   takeMVar s

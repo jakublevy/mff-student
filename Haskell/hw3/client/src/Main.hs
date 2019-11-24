@@ -1,9 +1,8 @@
 import Network.Socket
-import System.IO
 import qualified Control.Exception as E
 import Options.Applicative
 import Data.Semigroup((<>))
-import System.Exit
+import System.Exit(die)
 
 import MainBrick
 
@@ -18,8 +17,8 @@ defaultPortN = "10042"
 
 srvAddr :: Hostname -> Port -> IO AddrInfo
 srvAddr ip port = E.catch 
-            (head <$> getAddrInfo Nothing (Just ip) (Just port))
-            defaultSrv
+                    (head <$> getAddrInfo Nothing (Just ip) (Just port))
+                    defaultSrv
     
     where
         defaultSrv :: E.IOException -> IO AddrInfo

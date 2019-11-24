@@ -1,19 +1,26 @@
 module GameTypes
   ( Pos
-  , Board
   , ScreenState(..)
   , Dir(..)
-  , module System.IO
+  , boardW
+  , boardH
   , module Writer
+  , module Reader
+  , module System.IO 
   ) where
 
-import qualified Data.Set as Set
-import System.IO
+import Data.Set
+import System.IO(Handle)
 import Writer
+import Reader
 
 type Pos = (Int, Int)
 
-type Board = [Pos]
+boardW :: Int
+boardW = 20
+
+boardH :: Int
+boardH = 20
 
 {- 
  - ScreenState is our datatype for storing the state of the screen. The record
@@ -29,7 +36,7 @@ data ScreenState =
     -- key 'v' toggles highlighting
     , curHighlighted :: Bool
     -- position of living cells
-    , cells :: Set.Set Pos
+    , cells :: Set Pos
     -- board width
     , width :: Int
     -- board height
@@ -38,6 +45,8 @@ data ScreenState =
     , handle :: Handle
     -- network writer
     , writer :: Writer
+    -- network reader
+    , reader :: Reader
     }
 
 -- Dir = Direction
@@ -48,4 +57,4 @@ data Dir
   | R
   | U
   | D
-  deriving (Eq)
+  deriving Eq
