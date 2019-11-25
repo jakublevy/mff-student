@@ -178,21 +178,22 @@ mainBrick sck = do
   initVty <- V.mkVty V.defaultConfig
   E.bracket
               --acquire resources
-    (do w <- initWriter h
+    (do wInf <- initWriter h
         rInf <- initReader h
-        return (w, rInf))
-    (\(w, rInf)
+        return (wInf, rInf))
+    (\(wInf, rInf)
          --release resources
       -> do
-       killThread timerTId
-       stopWriter w
+       killThread $ snd wInf
        killThread $ snd rInf
-       hClose h)
-    (\(w, rInf) ->
+       killThread timerTId
+       hClose h
+       )
+    (\(wInf, rInf) ->
        void $
        customMain
          initVty
          (V.mkVty V.defaultConfig)
          (Just chan)
          app
-         (putWriterReader w (fst rInf) (initState speed)))
+         (putWriterReader (fst wInf) (fst rInf) (initState speed)))
