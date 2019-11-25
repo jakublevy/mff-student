@@ -1,0 +1,116 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+.swapBtn {
+    margin-top: 27px;
+    margin-bottom: -27px;
+    position: relative;
+}
+
+.dltBtn {
+    background-color: red;
+    color: white;
+}
+
+.editBtn {
+    background-color: gold;
+}
+
+.swapBtn {
+    background-color: rgba(32,138,255);
+    color: white;
+}
+
+.btn {
+    border-radius: 0.2em;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.okBtn {
+    background-color: rgba(97,165,82);
+    color: white;
+}
+
+.ed * {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.ed input {
+    max-width: 15%;
+}
+
+.ed {
+    white-space: nowrap;
+    max-width: 240px;
+}
+
+.btn:hover {
+    opacity: 0.7;
+}
+
+table tr:nth-child(even){
+    background-color: #e2e2e2;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.form {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.form input {
+      width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+span {
+    display: inline;
+}
+
+input {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.form button[type="submit"] {
+    width: 100%;
+    padding: 14px 20px;
+  margin: 8px 0;
+}
+
+.btnCell {
+    text-align: center;
+}
+
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}

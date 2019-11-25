@@ -1,0 +1,163 @@
+function deleteBtnOnClick() {
+    var id = this.getAttribute('data-id');
+    httpRequest = new XMLHttpRequest()
+    httpRequest.open('POST', 'delete_item.php', true);
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    httpRequest.posted = id;
+    httpRequest.onreadystatechange = function () {
+        if(httpRequest.status === 200) {
+            var row = document.getElementById('row-' + this.posted);
+            if(row !== null) {
+                row.remove();
+            }
+        }
+        else {
+            alert("Delete failed, try again.");
+        }
+    }
+    httpRequest.send('del_item_id=' + id);
+}
+
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); 
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+window.onload = function() {
+    var deleteBtns = document.getElementsByClassName("dltBtn");
+    for(var i = 0; i < deleteBtns.length; ++i) {
+        deleteBtns[i].addEventListener('click', deleteBtnOnClick, false);
+    }
+
+    var editbtns = document.getElementsByClassName('editBtn')
+    for(var i = 0; i < editbtns.length; ++i) {
+        editbtns[i].addEventListener('click', editBtnOnClick, false);
+    }
+
+    var swapbtns = document.getElementsByClassName('swapBtn');
+    for(var i = 0; i < swapbtns.length; ++i) {
+        swapbtns[i].addEventListener('click', swapBtnOnClick, false);
+    }
+}
+
+function editBtnOnClick() {
+    var id = this.getAttribute('data-id');
+    var label = htmlToElement("<span>Amount: </span>");
+    var amount = htmlToElement('<input type="number" required min="1" id="amount-' + id + '">'); 
+    var ok = htmlToElement('<button class="btn okBtn" data-id="' + id + '">Ok</button>');
+    var cancel = htmlToElement('<button id="cnc-'+id+'" class="btn dltBtn" data-id="' + id + '">Cancel</button>');
+
+    var parenttr = document.getElementById('row-' + id);
+    if(parenttr.cells.length === 5) {
+
+        cancel.addEventListener('click', cancelBtnOnClick, false);
+        ok.addEventListener('click', okBtnOnClick, false);
+        var form = htmlToElement('<td class="ed" id="edit-'+ id +'"></td>')
+        form.appendChild(label);
+        form.appendChild(amount);
+        form.appendChild(ok);
+        form.appendChild(cancel);
+        parenttr.appendChild(form);
+    }
+}
+
+function cancelBtnOnClick() {
+   var id = this.getAttribute('data-id');
+   var editTd = document.getElementById('edit-' + id);
+   if(editTd !== null) {
+       editTd.remove();
+   }
+}
+function okBtnOnClick() {
+    var id = this.getAttribute('data-id');
+    var amountEl = document.getElementById('amount-' + id);
+    if(amountEl.checkValidity()) {
+        httpRequest = new XMLHttpRequest()
+        httpRequest.open('POST', 'edit_amount.php', true);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.id = id;
+        httpRequest.newamount = amountEl.value;
+        httpRequest.onreadystatechange = function () {
+            if(httpRequest.status === 200) {
+                var elChange = document.getElementById('act-' + this.id);
+                elChange.innerHTML = this.newamount;
+                var c = document.getElementById('cnc-' + this.id);
+                if(c !== null) {
+                    c.click();
+                }
+            }
+            else {
+                alert('Edit failed, try again.')
+            }
+        }
+        httpRequest.send('item_id=' + id + '&new_amount=' + amountEl.value);
+    }
+}
+
+function extractId(row) {
+    return row.split('-')[1];
+}
+
+function swapBtnOnClick() {
+    var prevId = this.getAttribute('data-prev');
+    var nextId = this.getAttribute('data-next');
+    httpRequest = new XMLHttpRequest()
+    httpRequest.open('POST', 'change_order.php', true);
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    httpRequest.previd = prevId;
+    httpRequest.nextid = nextId;
+    httpRequest.swaped = false;
+    httpRequest.onreadystatechange = function () {
+        if(httpRequest.status === 200) {
+            if(!this.swaped) {
+                this.swaped = true;
+                var rowP = document.getElementById('row-' + this.previd);
+                var rowN = document.getElementById('row-' + this.nextid);
+                if(rowP !== null && rowN !== null) {
+                    rowP.before(rowN);
+
+                if(rowP.nextElementSibling === null) {
+                    var c = rowP.children[2];
+                    rowP.replaceChild(htmlToElement('<td></td>'), rowP.children[2]);
+                    rowN.replaceChild(c, rowN.children[2]);
+                    cc = c.children[0];
+                    var pr = cc.getAttribute('data-prev');
+                    var ne = cc.getAttribute('data-next');
+                    cc.setAttribute('data-prev', ne);
+                    cc.setAttribute('data-next', pr);
+                    cc.id = 'swp-' + ne +'-' + pr
+                }
+
+                 if(rowN.children[2].children.length == 1 && rowP.nextElementSibling !== null) {
+                        var b = rowN.children[2].children[0];
+                        var id = rowP.children[2].children[0].getAttribute('data-prev');
+                        b.setAttribute('data-next', id);
+                        b.id = 'swp-' + b.getAttribute('data-prev') + '-' + this.previd;
+                    }
+                    }
+                    if(rowP.children[2].children.length == 1) {
+                        var b = rowP.children[2].children[0];
+                        var r = rowP.nextElementSibling;
+                        if(r !== null) {
+                        var id = extractId(r.id);
+                        b.setAttribute('data-next', id);
+                        b.id = 'swp-' + b.getAttribute('data-prev') + '-' + id;
+                        }
+                    }
+
+                    if(rowN.previousElementSibling !== null) {
+                        var rowF = rowN.previousElementSibling;
+                        var b = rowF.children[2].children[0];
+                        b.setAttribute('data-next', this.nextid);
+                        b.id = 'swp-' + b.getAttribute('data-prev') + '-' + this.nextid;
+                    }
+        }
+        }
+        else {
+            alert('Swapping failed, try again.');
+        }
+    }
+    httpRequest.send('prev_id=' + prevId + '&next_id=' + nextId);
+}
