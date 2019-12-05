@@ -23,7 +23,7 @@ function swap_order(int $prev_id, int $next_id) : Bool {
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_POST['prev_id']) and isset($_POST['next_id'])) {
     if(!swap_order($_POST['prev_id'], $_POST['next_id'])) {
-        header("HTTP/1.1 500 Internal Server Error");
+        http_response_code(422); //Unprocessable Entity
     }
 }
 ?>

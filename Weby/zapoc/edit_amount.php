@@ -17,8 +17,14 @@ function update_amount(int $item_id, int $new_amount) : Bool {
     return $stmt->rowCount() === 1;
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_POST['item_id']) and isset($_POST['new_amount'])) {
-    if(!update_amount($_POST['item_id'], $_POST['new_amount'])) {
-        header("HTTP/1.1 500 Internal Server Error");
+    try {
+        if(!update_amount($_POST['item_id'], $_POST['new_amount'])) {
+            http_response_code(422); //Unprocessable Entity
+        }
+    }
+    catch (TypeError $e) {
+        http_response_code(422); //Unprocessable Entity
+        error_log('Attempt to update item\'s amount to non integer value.');
     }
 }
 ?>

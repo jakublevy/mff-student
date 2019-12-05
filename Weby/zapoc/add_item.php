@@ -107,6 +107,20 @@ function update_on_cart(int $id, int $amount) : Bool {
     return $stmt->rowCount() === 1;
 }
 
+
+/**
+ * Deletes an item given by Id from DB.
+ *
+ * @param  int $id Id of an item to remove from DB.
+ *
+ * @return void
+ */
+function delete_item(int $id) {
+    $stmt = $GLOBALS['_DBH']->prepare('delete from items where id = :v;');
+    $stmt->bindValue(':v', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 echo("<h3>Add Item</h3>");
 echo(generate_form());
 
@@ -114,11 +128,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST['item']) and isset($_
     $id = item2id($_POST['item']);
     if($id === null) { //add new item do db, add it to cart
        $id = insert_item($_POST['item']);
-       insert_into_cart($id, $_POST['amount']);
+       try {
+            insert_into_cart($id, $_POST['amount']);
+       }
+       catch(TypeError $e) {
+           delete_item($id);
+           error_log('Attempt to insert an item with invalid amount.');
+       }
     }
     else { //add/update existing item on cart
-        if(!update_on_cart($id, $_POST['amount'])) {
-            insert_into_cart($id, $_POST['amount']);
+        try {
+            if(!update_on_cart($id, $_POST['amount'])) {
+                insert_into_cart($id, $_POST['amount']);
+            }
+        }
+        catch(TypeError $e) {
+            delete_item($id);
+            error_log('Attempt to insert an item with invalid amount.');
         }
     }
 header('Location: index.php');

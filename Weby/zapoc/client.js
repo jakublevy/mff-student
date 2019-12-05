@@ -23,6 +23,7 @@ function deleteBtnOnClick() {
     httpRequest.open('POST', 'delete_item.php', true);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.posted = id;
+    httpRequest.h = false;
     httpRequest.onreadystatechange = function () {
         if(httpRequest.status === 200) {
             var row = document.getElementById('row-' + this.posted);
@@ -35,7 +36,10 @@ function deleteBtnOnClick() {
             }
         }
         else {
-            alert("Delete failed, try again.");
+            if(this.h === false) {
+                alert("Delete failed, try again.");
+                this.h = true;
+            }
         }
     }
     httpRequest.send('del_item_id=' + id);
@@ -107,6 +111,7 @@ function okBtnOnClick() {
         httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         httpRequest.id = id;
         httpRequest.newamount = amountEl.value;
+        httpRequest.h = false;
         httpRequest.onreadystatechange = function () {
             if(httpRequest.status === 200) {
                 var elChange = document.getElementById('act-' + this.id);
@@ -117,7 +122,10 @@ function okBtnOnClick() {
                 }
             }
             else {
-                alert('Edit failed, try again.')
+                if(this.h === false) {
+                    this.h = true;
+                    alert('Edit failed, try again.')
+                }
             }
         }
         httpRequest.send('item_id=' + id + '&new_amount=' + amountEl.value);
@@ -152,6 +160,7 @@ function swapBtnOnClick() {
     httpRequest.previd = prevId;
     httpRequest.nextid = nextId;
     httpRequest.swaped = false;
+    httpRequest.h = false;
     httpRequest.onreadystatechange = function () {
         if(httpRequest.status === 200) {
             if(!this.swaped) {
@@ -199,7 +208,10 @@ function swapBtnOnClick() {
         }
         }
         else {
-            alert('Swapping failed, try again.');
+            if(this.h === false) {
+                this.h = true;
+                alert('Swapping failed, try again.');
+            }
         }
     }
     httpRequest.send('prev_id=' + prevId + '&next_id=' + nextId);

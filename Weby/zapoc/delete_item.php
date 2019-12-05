@@ -16,7 +16,7 @@ function delete_item_from_cart(int $item_id) : Bool {
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_POST['del_item_id'])) {
     if(!delete_item_from_cart($_POST['del_item_id'])) {
-        header("HTTP/1.1 500 Internal Server Error");
+        http_response_code(422); //Unprocessable Entity
     }
 }
 ?>
