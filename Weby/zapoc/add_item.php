@@ -119,7 +119,7 @@ function update_on_cart(int $id, int $amount) : Bool {
  *
  * @return void
  */
-function validateAmount(int $amount) {
+function validate_amount(int $amount) {
     if($amount < 1) {
         throw new InvalidArgumentException('Invalid amount');
     }
@@ -154,30 +154,30 @@ echo(generate_form());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' and isset($_POST['item'])) {
     $id = item2id($_POST['item']);
-    $amount = !isset($_POST['amount']) ? 1 : $_POST['amount'];
+    $amount = (!isset($_POST['amount']) or $_POST['amount'] === '') ? 1 : $_POST['amount'];
     if($id === null) { //add new item do db, add it to cart
        $id = insert_item($_POST['item']);
        try {
-            validateAmount($amount);
+            validate_amount($amount);
             insert_into_cart($id, $amount);
        }
-       catch(Exception $e) {
+       catch(TypeError | InvalidArgumentException $e) {
            delete_item($id);
            error_log('Attempt to insert an item with invalid amount.');
-           show_err_box('Error: Item not added!');
+           show_err_box('Error: Item was not added!');
        }
     }
     else { //add/update existing item on cart
         try {
-            validateAmount($amount);
+            validate_amount($amount);
             if(!update_on_cart($id, $amount)) {
                 insert_into_cart($id, $amount);
             }
         }
-        catch(Exception $e) {
+        catch(TypeError | InvalidArgumentException $e) {
             delete_item($id);
             error_log('Attempt to insert an item with invalid amount.');
-            show_err_box('Error: Item not added!');
+            show_err_box('Error: Item was not added/updated!');
         }
     }
 header('Location: index.php');

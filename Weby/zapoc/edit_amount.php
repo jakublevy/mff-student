@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_POST['item_id']) and isset($
             http_response_code(422); //Unprocessable Entity
         }
     }
-    catch (Exception $e) {
+    catch (TypeError | InvalidArgumentException $e) {
         http_response_code(422); //Unprocessable Entity
         error_log('Attempt to update item\'s amount to non integer value.');
     }

@@ -47,7 +47,17 @@ function deleteBtnOnClick() {
             }
         }
     }
-    httpRequest.send('del_item_id=' + id);
+    if(isInteger(id)) {
+        httpRequest.send('del_item_id=' + id);
+    }
+    else {
+        alert("Delete failed, try again.");
+        }
+    }
+
+//Checks if string value contains integer value
+function isInteger(value) {
+  return /^\d+$/.test(value);
 }
 
 /*
@@ -69,6 +79,10 @@ Displays simple form.
 */
 function editBtnOnClick() {
     var id = this.getAttribute('data-id');
+    if(!isInteger(id)) {
+        alert('Edit form could not be displayed, refresh page and try again!')
+        return
+    }
     var label = htmlToElement("<span>Amount: </span>");
     var amount = htmlToElement('<input type="number" required min="1" id="amount-' + id + '">'); 
     var ok = htmlToElement('<button class="btn okBtn" data-id="' + id + '">Ok</button>');
@@ -87,6 +101,16 @@ function editBtnOnClick() {
         form.appendChild(ok);
         form.appendChild(cancel);
         parenttr.appendChild(form);
+
+        amount.focus();
+        amount.addEventListener('keyup', function(key) {
+                if(key.keyCode === 13) { //Enter pressed
+                    ok.click();
+                }
+                else if(key.keyCode === 27) { //Esc pressed
+                    cancel.click();
+                }
+        }, false);
     }
 }
 
@@ -225,7 +249,12 @@ function swapBtnOnClick() {
             }
         }
     }
-    httpRequest.send('prev_id=' + prevId + '&next_id=' + nextId);
+    if(isInteger(prevId) && isInteger(nextId)) {
+        httpRequest.send('prev_id=' + prevId + '&next_id=' + nextId);
+    }
+    else {
+        alert('Swapping failed, try again.');
+    }
 }
 
 //Request to close an error message box.

@@ -1,12 +1,24 @@
 Placeholdery jsou nyní lépe odlišitelné od uživatelem vyplněných dat.
     ::placeholder {
         color: #A9A9A9;
+        font-style: oblique;
     }
 
 Amount nyní není required, pokud amount není vyplněn při přidání nové položky, na serveru se doplní 1.
 
 Na server side nově kontrola, aby amount > 0 (u přidání i editace položky).
 Opraven alert, který oznamuje, že editace neproběhla úspěšně.
+    - Přišel jsem na pár super vlastností PHP
+        - empty(0) === bool(true)
+        - catch(Exception $e) ne uplně vždy odchytne výjimku, global handler mi ji ukradne
+            - https://stackoverflow.com/questions/15461611/php-try-catch-not-catching-all-exceptions
 
-Přidán error box zobrazující neúspěch odeslání formuláře (při přidání nové položky do košíku).
+Přidán error box zobrazující neúspěch odeslání formuláře (při neúspěšném přídání položky do košíku).
     - Server si do $_SESSION uloží error message, ten pak zobrazí v danger boxu.
+
+
+Při kliknutí na tlačítko Edit se nastaví focus na element obsahující nový amount.
+Enter klikne na tlačítko Ok pro provedení editace.
+Esc klikne na tlačítko Cancel pro zrušení editace.
+
+Přidán favicon.ico.
